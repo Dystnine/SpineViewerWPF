@@ -50,6 +50,7 @@ Requirements:
   * Custom import of WpfXnaControl.dll file as original NuGet package is massively outdated
   * Cleaned code
   * Updated ReadMe
+  * Implemented Spine Runtime 4.2.33
 
 ## Issue:
 *  \_(:3」∠)\_
