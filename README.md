@@ -6,7 +6,6 @@ A tool that can view spine files with different spine-runtime versions and expor
 ## Usage
 Start by loading an Atlas file for the specific spine you want to view, and the program will then try to import the skeleton data in JSON format and the sprite-atlas in PNG format. All 3 files must be named according to the atlas data (eg: Spine1.atlas, Spine1.json, Spine1.png). Make sure to select the correct spine version according to your skeleton data, or else there may be visual bugs, or the spine will not load/animate correctly. 
 
-
 ## Hot Key
 * Ctrl+Mousewheel  Canvas Scaling
 * Alt+Mousewheel  Spine Scaling
@@ -29,6 +28,7 @@ Start by loading an Atlas file for the specific spine you want to view, and the 
   * **4.0.31**
   * **4.0.64**
   * **4.1.00**
+  * **4.2.33**
 * Export animation to gif or png file.
 * Can view Animation with different options.
 

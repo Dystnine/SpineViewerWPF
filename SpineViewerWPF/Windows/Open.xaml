@@ -45,6 +45,7 @@
             <ComboBoxItem Content="4.0.31"></ComboBoxItem>
             <ComboBoxItem Content="4.0.64"></ComboBoxItem>
             <ComboBoxItem Content="4.1.00"></ComboBoxItem>
+            <ComboBoxItem Content="4.2.33"></ComboBoxItem>
         </ComboBox>
         <TextBox Name="tb_Muilt_Texture" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="160" VerticalAlignment="Center" Height="22" ></TextBox>
         <Label Content="ex:__normal,__pro  use ',' to split." Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" FontSize="11"></Label>

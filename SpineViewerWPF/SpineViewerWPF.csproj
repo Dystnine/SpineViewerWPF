@@ -76,4 +76,7 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SpineLibrary\spine-runtimes-4.2.33\" />
+  </ItemGroup>
 </Project>
