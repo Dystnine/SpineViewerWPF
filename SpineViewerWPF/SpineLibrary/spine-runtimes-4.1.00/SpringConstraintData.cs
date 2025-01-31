@@ -27,33 +27,34 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-using System;
+namespace Spine4_1_00
+{
+    /// <summary>
+    /// Stores the setup pose for a <see cref="SpringConstraint"/>.
+    /// <para>
+    /// See <a href="http://esotericsoftware.com/spine-spring-constraints">Spring constraints</a> in the Spine User Guide.</para>
+    /// </summary>
+    public class SpringConstraintData : ConstraintData
+    {
+        internal ExposedList<BoneData> bones = new ExposedList<BoneData>();
+        internal float mix, friction, gravity, wind, stiffness, damping;
+        internal bool rope, stretch;
 
-namespace Spine4_1_00 {
-	/// <summary>
-	/// Stores the setup pose for a <see cref="SpringConstraint"/>.
-	/// <para>
-	/// See <a href="http://esotericsoftware.com/spine-spring-constraints">Spring constraints</a> in the Spine User Guide.</para>
-	/// </summary>
-	public class SpringConstraintData : ConstraintData {
-		internal ExposedList<BoneData> bones = new ExposedList<BoneData>();
-		internal float mix, friction, gravity, wind, stiffness, damping;
-		internal bool rope, stretch;
+        public SpringConstraintData(string name) : base(name)
+        {
+        }
 
-		public SpringConstraintData (string name) : base(name) {
-		}
+        /// <summary>The bones that are constrained by this spring constraint.</summary>
+        public ExposedList<BoneData> Bones { get { return bones; } }
 
-		/// <summary>The bones that are constrained by this spring constraint.</summary>
-		public ExposedList<BoneData> Bones { get { return bones; } }
-
-		/// <summary>A percentage (0-1) that controls the mix between the constrained and unconstrained poses.</summary>
-		public float Mix { get { return mix; } set { mix = value; } }
-		public float Friction { get { return friction; } set { friction = value; } }
-		public float Gravity { get { return gravity; } set { gravity = value; } }
-		public float Wind { get { return wind; } set { wind = value; } }
-		public float Stiffness { get { return stiffness; } set { stiffness = value; } }
-		public float Damping { get { return damping; } set { damping = value; } }
-		public bool Rope { get { return rope; } set { rope = value; } }
-		public bool Stretch { get { return stretch; } set { stretch = value; } }
-	}
+        /// <summary>A percentage (0-1) that controls the mix between the constrained and unconstrained poses.</summary>
+        public float Mix { get { return mix; } set { mix = value; } }
+        public float Friction { get { return friction; } set { friction = value; } }
+        public float Gravity { get { return gravity; } set { gravity = value; } }
+        public float Wind { get { return wind; } set { wind = value; } }
+        public float Stiffness { get { return stiffness; } set { stiffness = value; } }
+        public float Damping { get { return damping; } set { damping = value; } }
+        public bool Rope { get { return rope; } set { rope = value; } }
+        public bool Stretch { get { return stretch; } set { stretch = value; } }
+    }
 }

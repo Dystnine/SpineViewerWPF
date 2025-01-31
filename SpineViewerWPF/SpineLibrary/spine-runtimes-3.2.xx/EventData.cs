@@ -31,22 +31,26 @@
 
 using System;
 
-namespace Spine3_2_xx {
-	public class EventData {
-		internal String name;
+namespace Spine3_2_xx
+{
+    public class EventData
+    {
+        internal String name;
 
-		public String Name { get { return name; } }
-		public int Int { get; set; }
-		public float Float { get; set; }
-		public String String { get; set; }
+        public String Name { get { return name; } }
+        public int Int { get; set; }
+        public float Float { get; set; }
+        public String String { get; set; }
 
-		public EventData (String name) {
-			if (name == null) throw new ArgumentNullException("name cannot be null.");
-			this.name = name;
-		}
+        public EventData(String name)
+        {
+            if (name == null) throw new ArgumentNullException("name cannot be null.");
+            this.name = name;
+        }
 
-		override public String ToString () {
-			return Name;
-		}
-	}
+        override public String ToString()
+        {
+            return Name;
+        }
+    }
 }

@@ -30,19 +30,23 @@
 
 using System;
 
-namespace Spine2_1_08 {
-	public class Event {
-		public EventData Data { get; private set; }
-		public int Int { get; set; }
-		public float Float { get; set; }
-		public String String { get; set; }
+namespace Spine2_1_08
+{
+    public class Event
+    {
+        public EventData Data { get; private set; }
+        public int Int { get; set; }
+        public float Float { get; set; }
+        public String String { get; set; }
 
-		public Event (EventData data) {
-			Data = data;
-		}
+        public Event(EventData data)
+        {
+            Data = data;
+        }
 
-		override public String ToString () {
-			return Data.Name;
-		}
-	}
+        override public String ToString()
+        {
+            return Data.Name;
+        }
+    }
 }

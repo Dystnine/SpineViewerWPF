@@ -1,13 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Windows;
+using System.Windows.Input;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpineViewerWPF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 
 public class Player
 {
@@ -37,18 +32,18 @@ public class Player
     public static void Frame_MouseWheel(MouseWheelEventArgs e)
     {
 
-            if (e.Delta > 0)
+        if (e.Delta > 0)
+        {
+            App.globalValues.Scale += 0.02f;
+        }
+        else
+        {
+            if (App.globalValues.Scale > 0.04f)
             {
-                App.globalValues.Scale += 0.02f;
+                App.globalValues.Scale -= 0.02f;
             }
-            else
-            {
-                if (App.globalValues.Scale > 0.04f)
-                {
-                    App.globalValues.Scale -= 0.02f;
-                }
-            }
-       
+        }
+
     }
 
     public static void DrawBG(ref SpriteBatch spriteBatch)

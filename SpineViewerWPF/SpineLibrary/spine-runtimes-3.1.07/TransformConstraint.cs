@@ -30,51 +30,57 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine3_1_07 {
-	public class TransformConstraint : IUpdatable {
-		internal TransformConstraintData data;
-		internal Bone bone, target;
-		internal float translateMix;
-		internal float x, y;
+namespace Spine3_1_07
+{
+    public class TransformConstraint : IUpdatable
+    {
+        internal TransformConstraintData data;
+        internal Bone bone, target;
+        internal float translateMix;
+        internal float x, y;
 
-		public TransformConstraintData Data { get { return data; } }
-		public Bone Bone { get { return bone; } set { bone = value; } }
-		public Bone Target { get { return target; } set { target = value; } }
-		public float TranslateMix { get { return translateMix; } set { translateMix = value; } }
-		public float X { get { return x; } set { x = value; } }
-		public float Y { get { return y; } set { y = value; } }
+        public TransformConstraintData Data { get { return data; } }
+        public Bone Bone { get { return bone; } set { bone = value; } }
+        public Bone Target { get { return target; } set { target = value; } }
+        public float TranslateMix { get { return translateMix; } set { translateMix = value; } }
+        public float X { get { return x; } set { x = value; } }
+        public float Y { get { return y; } set { y = value; } }
 
-		public TransformConstraint (TransformConstraintData data, Skeleton skeleton) {
-			if (data == null) throw new ArgumentNullException("data cannot be null.");
-			if (skeleton == null) throw new ArgumentNullException("skeleton cannot be null.");
-			this.data = data;
-			translateMix = data.translateMix;
-			x = data.x;
-			y = data.y;
+        public TransformConstraint(TransformConstraintData data, Skeleton skeleton)
+        {
+            if (data == null) throw new ArgumentNullException("data cannot be null.");
+            if (skeleton == null) throw new ArgumentNullException("skeleton cannot be null.");
+            this.data = data;
+            translateMix = data.translateMix;
+            x = data.x;
+            y = data.y;
 
-			bone = skeleton.FindBone(data.bone.name);
-			target = skeleton.FindBone(data.target.name);
-		}
+            bone = skeleton.FindBone(data.bone.name);
+            target = skeleton.FindBone(data.target.name);
+        }
 
-		public void Update () {
-			Apply();
-		}
+        public void Update()
+        {
+            Apply();
+        }
 
-		public void Apply () {
-			float translateMix = this.translateMix;
-			if (translateMix > 0) {
-				Bone bone = this.bone;
-				float tx, ty;
-				target.LocalToWorld(x, y, out tx, out ty);
-				bone.worldX += (tx - bone.worldX) * translateMix;
-				bone.worldY += (ty - bone.worldY) * translateMix;
-			}
-		}
+        public void Apply()
+        {
+            float translateMix = this.translateMix;
+            if (translateMix > 0)
+            {
+                Bone bone = this.bone;
+                float tx, ty;
+                target.LocalToWorld(x, y, out tx, out ty);
+                bone.worldX += (tx - bone.worldX) * translateMix;
+                bone.worldY += (ty - bone.worldY) * translateMix;
+            }
+        }
 
-		override public String ToString () {
-			return data.name;
-		}
-	}
+        override public String ToString()
+        {
+            return data.name;
+        }
+    }
 }

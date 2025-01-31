@@ -30,18 +30,20 @@
 
 using System;
 
-namespace Spine3_5_51 {
-	public interface AttachmentLoader {
-		/// <return>May be null to not load any attachment.</return>
-		RegionAttachment NewRegionAttachment (Skin skin, String name, String path);
+namespace Spine3_5_51
+{
+    public interface AttachmentLoader
+    {
+        /// <return>May be null to not load any attachment.</return>
+        RegionAttachment NewRegionAttachment(Skin skin, String name, String path);
 
-		/// <return>May be null to not load any attachment.</return>
-		MeshAttachment NewMeshAttachment (Skin skin, String name, String path);
+        /// <return>May be null to not load any attachment.</return>
+        MeshAttachment NewMeshAttachment(Skin skin, String name, String path);
 
-		/// <return>May be null to not load any attachment.</return>
-		BoundingBoxAttachment NewBoundingBoxAttachment (Skin skin, String name);
+        /// <return>May be null to not load any attachment.</return>
+        BoundingBoxAttachment NewBoundingBoxAttachment(Skin skin, String name);
 
-		/// <returns>May be null to not load any attachment</returns>
-		PathAttachment NewPathAttachment (Skin skin, String name);
-	}
+        /// <returns>May be null to not load any attachment</returns>
+        PathAttachment NewPathAttachment(Skin skin, String name);
+    }
 }

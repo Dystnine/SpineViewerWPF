@@ -31,84 +31,100 @@
 using System;
 using System.Collections.Generic;
 
-namespace Spine3_4_02 {
-	/// <summary>Stores attachments by slot index and attachment name.</summary>
-	public class Skin {
-		internal String name;
-		private Dictionary<AttachmentKeyTuple, Attachment> attachments =
-			new Dictionary<AttachmentKeyTuple, Attachment>(AttachmentKeyTupleComparer.Instance);
+namespace Spine3_4_02
+{
+    /// <summary>Stores attachments by slot index and attachment name.</summary>
+    public class Skin
+    {
+        internal String name;
+        private Dictionary<AttachmentKeyTuple, Attachment> attachments =
+            new Dictionary<AttachmentKeyTuple, Attachment>(AttachmentKeyTupleComparer.Instance);
 
-		public String Name { get { return name; } }
-		public Dictionary<AttachmentKeyTuple, Attachment> Attachments { get { return attachments; } }
+        public String Name { get { return name; } }
+        public Dictionary<AttachmentKeyTuple, Attachment> Attachments { get { return attachments; } }
 
-		public Skin (String name) {
-			if (name == null) throw new ArgumentNullException("name", "name cannot be null.");
-			this.name = name;
-		}
+        public Skin(String name)
+        {
+            if (name == null) throw new ArgumentNullException("name", "name cannot be null.");
+            this.name = name;
+        }
 
-		public void AddAttachment (int slotIndex, String name, Attachment attachment) {
-			if (attachment == null) throw new ArgumentNullException("attachment", "attachment cannot be null.");
-			attachments[new AttachmentKeyTuple(slotIndex, name)] = attachment;
-		}
+        public void AddAttachment(int slotIndex, String name, Attachment attachment)
+        {
+            if (attachment == null) throw new ArgumentNullException("attachment", "attachment cannot be null.");
+            attachments[new AttachmentKeyTuple(slotIndex, name)] = attachment;
+        }
 
-		/// <returns>May be null.</returns>
-		public Attachment GetAttachment (int slotIndex, String name) {
-			Attachment attachment;
-			attachments.TryGetValue(new AttachmentKeyTuple(slotIndex, name), out attachment);
-			return attachment;
-		}
+        /// <returns>May be null.</returns>
+        public Attachment GetAttachment(int slotIndex, String name)
+        {
+            Attachment attachment;
+            attachments.TryGetValue(new AttachmentKeyTuple(slotIndex, name), out attachment);
+            return attachment;
+        }
 
-		public void FindNamesForSlot (int slotIndex, List<String> names) {
-			if (names == null) throw new ArgumentNullException("names", "names cannot be null.");
-			foreach (AttachmentKeyTuple key in attachments.Keys)
-				if (key.slotIndex == slotIndex) names.Add(key.name);
-		}
+        public void FindNamesForSlot(int slotIndex, List<String> names)
+        {
+            if (names == null) throw new ArgumentNullException("names", "names cannot be null.");
+            foreach (AttachmentKeyTuple key in attachments.Keys)
+                if (key.slotIndex == slotIndex) names.Add(key.name);
+        }
 
-		public void FindAttachmentsForSlot (int slotIndex, List<Attachment> attachments) {
-			if (attachments == null) throw new ArgumentNullException("attachments", "attachments cannot be null.");
-			foreach (KeyValuePair<AttachmentKeyTuple, Attachment> entry in this.attachments)
-				if (entry.Key.slotIndex == slotIndex) attachments.Add(entry.Value);
-		}
+        public void FindAttachmentsForSlot(int slotIndex, List<Attachment> attachments)
+        {
+            if (attachments == null) throw new ArgumentNullException("attachments", "attachments cannot be null.");
+            foreach (KeyValuePair<AttachmentKeyTuple, Attachment> entry in this.attachments)
+                if (entry.Key.slotIndex == slotIndex) attachments.Add(entry.Value);
+        }
 
-		override public String ToString () {
-			return name;
-		}
+        override public String ToString()
+        {
+            return name;
+        }
 
-		/// <summary>Attach all attachments from this skin if the corresponding attachment from the old skin is currently attached.</summary>
-		internal void AttachAll (Skeleton skeleton, Skin oldSkin) {
-			foreach (KeyValuePair<AttachmentKeyTuple, Attachment> entry in oldSkin.attachments) {
-				int slotIndex = entry.Key.slotIndex;
-				Slot slot = skeleton.slots.Items[slotIndex];
-				if (slot.attachment == entry.Value) {
-					Attachment attachment = GetAttachment(slotIndex, entry.Key.name);
-					if (attachment != null) slot.Attachment = attachment;
-				}
-			}
-		}
+        /// <summary>Attach all attachments from this skin if the corresponding attachment from the old skin is currently attached.</summary>
+        internal void AttachAll(Skeleton skeleton, Skin oldSkin)
+        {
+            foreach (KeyValuePair<AttachmentKeyTuple, Attachment> entry in oldSkin.attachments)
+            {
+                int slotIndex = entry.Key.slotIndex;
+                Slot slot = skeleton.slots.Items[slotIndex];
+                if (slot.attachment == entry.Value)
+                {
+                    Attachment attachment = GetAttachment(slotIndex, entry.Key.name);
+                    if (attachment != null) slot.Attachment = attachment;
+                }
+            }
+        }
 
-		public struct AttachmentKeyTuple {
-			public readonly int slotIndex;
-			public readonly string name;
-			internal readonly int nameHashCode;
+        public struct AttachmentKeyTuple
+        {
+            public readonly int slotIndex;
+            public readonly string name;
+            internal readonly int nameHashCode;
 
-			public AttachmentKeyTuple (int slotIndex, string name) {
-				this.slotIndex = slotIndex;
-				this.name = name;
-				nameHashCode = this.name.GetHashCode();
-			}
-		}
+            public AttachmentKeyTuple(int slotIndex, string name)
+            {
+                this.slotIndex = slotIndex;
+                this.name = name;
+                nameHashCode = this.name.GetHashCode();
+            }
+        }
 
-		// Avoids boxing in the dictionary.
-		class AttachmentKeyTupleComparer : IEqualityComparer<AttachmentKeyTuple> {
-			internal static readonly AttachmentKeyTupleComparer Instance = new AttachmentKeyTupleComparer();
+        // Avoids boxing in the dictionary.
+        class AttachmentKeyTupleComparer : IEqualityComparer<AttachmentKeyTuple>
+        {
+            internal static readonly AttachmentKeyTupleComparer Instance = new AttachmentKeyTupleComparer();
 
-			bool IEqualityComparer<AttachmentKeyTuple>.Equals (AttachmentKeyTuple o1, AttachmentKeyTuple o2) {
-				return o1.slotIndex == o2.slotIndex && o1.nameHashCode == o2.nameHashCode && o1.name == o2.name;
-			}
+            bool IEqualityComparer<AttachmentKeyTuple>.Equals(AttachmentKeyTuple o1, AttachmentKeyTuple o2)
+            {
+                return o1.slotIndex == o2.slotIndex && o1.nameHashCode == o2.nameHashCode && o1.name == o2.name;
+            }
 
-			int IEqualityComparer<AttachmentKeyTuple>.GetHashCode (AttachmentKeyTuple o) {
-				return o.slotIndex;
-			}
-		}
-	}
+            int IEqualityComparer<AttachmentKeyTuple>.GetHashCode(AttachmentKeyTuple o)
+            {
+                return o.slotIndex;
+            }
+        }
+    }
 }

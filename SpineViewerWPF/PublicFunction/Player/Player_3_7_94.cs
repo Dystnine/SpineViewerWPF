@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Spine3_7_94;
-using SpineViewerWPF;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Spine3_7_94;
+using SpineViewerWPF;
 
 public class Player_3_7_94 : IPlayer
 {
@@ -25,7 +22,7 @@ public class Player_3_7_94 : IPlayer
     public void Initialize()
     {
         Player.Initialize(ref App.graphicsDevice, ref App.spriteBatch);
-        
+
     }
 
     public void LoadContent(ContentManager contentManager)
@@ -117,15 +114,15 @@ public class Player_3_7_94 : IPlayer
         App.graphicsDevice.Clear(Color.Transparent);
 
         Player.DrawBG(ref App.spriteBatch);
-        App.globalValues.TimeScale = (float)App.globalValues.Speed / 30f;
+        App.globalValues.TimeScale = App.globalValues.Speed / 30f;
 
-        state.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds/1000f);
+        state.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000f);
         state.Apply(skeleton);
 
         skeleton.X = App.globalValues.PosX;
         skeleton.Y = App.globalValues.PosY;
-        skeleton.ScaleX = (App.globalValues.FilpX ? -1 : 1)* App.globalValues.Scale;
-        skeleton.ScaleY = (App.globalValues.FilpY ? 1 : -1)* App.globalValues.Scale;
+        skeleton.ScaleX = (App.globalValues.FilpX ? -1 : 1) * App.globalValues.Scale;
+        skeleton.ScaleY = (App.globalValues.FilpY ? 1 : -1) * App.globalValues.Scale;
 
 
         skeleton.RootBone.Rotation = App.globalValues.Rotation;
@@ -143,7 +140,7 @@ public class Player_3_7_94 : IPlayer
         skeletonRenderer.Draw(skeleton);
         skeletonRenderer.End();
 
-       
+
 
 
 
@@ -156,7 +153,7 @@ public class Player_3_7_94 : IPlayer
         {
 
             TrackEntry entry = state.GetCurrent(0);
-            float speed = (float)App.globalValues.Speed / 30f;
+            float speed = App.globalValues.Speed / 30f;
             if (entry != null)
             {
                 if (App.globalValues.IsRecoding && (App.globalValues.GifList != null || App.recordImageCount > 0) && !entry.IsComplete)
@@ -193,7 +190,7 @@ public class Player_3_7_94 : IPlayer
                     App.globalValues.Lock = entry.AnimationTime / entry.AnimationEnd;
                     entry.TimeScale = App.globalValues.TimeScale;
                 }
-                App.globalValues.LoadingProcess = $"{ Math.Round(entry.AnimationTime / entry.AnimationEnd * 100, 2)}%";
+                App.globalValues.LoadingProcess = $"{Math.Round(entry.AnimationTime / entry.AnimationEnd * 100, 2)}%";
             }
         }
 
@@ -209,7 +206,7 @@ public class Player_3_7_94 : IPlayer
 
     public void SizeChange()
     {
-        if(App.graphicsDevice != null)
+        if (App.graphicsDevice != null)
             Player.UserControl_SizeChanged(ref App.graphicsDevice);
     }
 

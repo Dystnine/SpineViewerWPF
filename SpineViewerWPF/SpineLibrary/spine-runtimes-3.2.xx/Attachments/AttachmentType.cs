@@ -29,8 +29,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-namespace Spine3_2_xx {
-	public enum AttachmentType {
-		region, boundingbox, mesh, weightedmesh, linkedmesh, weightedlinkedmesh
-	}
+namespace Spine3_2_xx
+{
+    public enum AttachmentType
+    {
+        region, boundingbox, mesh, weightedmesh, linkedmesh, weightedlinkedmesh
+    }
 }

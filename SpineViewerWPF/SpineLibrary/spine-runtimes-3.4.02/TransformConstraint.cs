@@ -30,100 +30,111 @@
 
 using System;
 
-namespace Spine3_4_02 {
-	public class TransformConstraint : IUpdatable {
-		internal TransformConstraintData data;
-		internal ExposedList<Bone> bones;
-		internal Bone target;
-		internal float rotateMix, translateMix, scaleMix, shearMix;
+namespace Spine3_4_02
+{
+    public class TransformConstraint : IUpdatable
+    {
+        internal TransformConstraintData data;
+        internal ExposedList<Bone> bones;
+        internal Bone target;
+        internal float rotateMix, translateMix, scaleMix, shearMix;
 
-		public TransformConstraintData Data { get { return data; } }
-		public ExposedList<Bone> Bones { get { return bones; } }
-		public Bone Target { get { return target; } set { target = value; } }
-		public float RotateMix { get { return rotateMix; } set { rotateMix = value; } }
-		public float TranslateMix { get { return translateMix; } set { translateMix = value; } }
-		public float ScaleMix { get { return scaleMix; } set { scaleMix = value; } }
-		public float ShearMix { get { return shearMix; } set { shearMix = value; } }
+        public TransformConstraintData Data { get { return data; } }
+        public ExposedList<Bone> Bones { get { return bones; } }
+        public Bone Target { get { return target; } set { target = value; } }
+        public float RotateMix { get { return rotateMix; } set { rotateMix = value; } }
+        public float TranslateMix { get { return translateMix; } set { translateMix = value; } }
+        public float ScaleMix { get { return scaleMix; } set { scaleMix = value; } }
+        public float ShearMix { get { return shearMix; } set { shearMix = value; } }
 
-		public TransformConstraint (TransformConstraintData data, Skeleton skeleton) {
-			if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
-			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
-			this.data = data;
-			rotateMix = data.rotateMix;
-			translateMix = data.translateMix;
-			scaleMix = data.scaleMix;
-			shearMix = data.shearMix;
+        public TransformConstraint(TransformConstraintData data, Skeleton skeleton)
+        {
+            if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
+            if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
+            this.data = data;
+            rotateMix = data.rotateMix;
+            translateMix = data.translateMix;
+            scaleMix = data.scaleMix;
+            shearMix = data.shearMix;
 
-			bones = new ExposedList<Bone>();
-			foreach (BoneData boneData in data.bones)
-				bones.Add (skeleton.FindBone (boneData.name));
-			
-			target = skeleton.FindBone(data.target.name);
-		}
+            bones = new ExposedList<Bone>();
+            foreach (BoneData boneData in data.bones)
+                bones.Add(skeleton.FindBone(boneData.name));
 
-		public void Apply () {
-			Update();
-		}
+            target = skeleton.FindBone(data.target.name);
+        }
 
-		public void Update () {
-			float rotateMix = this.rotateMix, translateMix = this.translateMix, scaleMix = this.scaleMix, shearMix = this.shearMix;
-			Bone target = this.target;
-			float ta = target.a, tb = target.b, tc = target.c, td = target.d;
-			ExposedList<Bone> bones = this.bones;
-			for (int i = 0, n = bones.Count; i < n; i++) {
-				Bone bone = bones.Items[i];
+        public void Apply()
+        {
+            Update();
+        }
 
-				if (rotateMix > 0) {
-					float a = bone.a, b = bone.b, c = bone.c, d = bone.d;
-					float r = (float)Math.Atan2(tc, ta) - (float)Math.Atan2(c, a) + data.offsetRotation * MathUtils.degRad;
-					if (r > MathUtils.PI)
-						r -= MathUtils.PI2;
-					else if (r < -MathUtils.PI) r += MathUtils.PI2;
-					r *= rotateMix;
-					float cos = MathUtils.Cos(r), sin = MathUtils.Sin(r);
-					bone.a = cos * a - sin * c;
-					bone.b = cos * b - sin * d;
-					bone.c = sin * a + cos * c;
-					bone.d = sin * b + cos * d;
-				}
+        public void Update()
+        {
+            float rotateMix = this.rotateMix, translateMix = this.translateMix, scaleMix = this.scaleMix, shearMix = this.shearMix;
+            Bone target = this.target;
+            float ta = target.a, tb = target.b, tc = target.c, td = target.d;
+            ExposedList<Bone> bones = this.bones;
+            for (int i = 0, n = bones.Count; i < n; i++)
+            {
+                Bone bone = bones.Items[i];
 
-				if (translateMix > 0) {
-					float tempx, tempy;
-					target.LocalToWorld(data.offsetX, data.offsetY, out tempx, out tempy);
-					bone.worldX += (tempx - bone.worldX) * translateMix;
-					bone.worldY += (tempy - bone.worldY) * translateMix;
-				}
+                if (rotateMix > 0)
+                {
+                    float a = bone.a, b = bone.b, c = bone.c, d = bone.d;
+                    float r = (float)Math.Atan2(tc, ta) - (float)Math.Atan2(c, a) + data.offsetRotation * MathUtils.degRad;
+                    if (r > MathUtils.PI)
+                        r -= MathUtils.PI2;
+                    else if (r < -MathUtils.PI) r += MathUtils.PI2;
+                    r *= rotateMix;
+                    float cos = MathUtils.Cos(r), sin = MathUtils.Sin(r);
+                    bone.a = cos * a - sin * c;
+                    bone.b = cos * b - sin * d;
+                    bone.c = sin * a + cos * c;
+                    bone.d = sin * b + cos * d;
+                }
 
-				if (scaleMix > 0) {
-					float bs = (float)Math.Sqrt(bone.a * bone.a + bone.c * bone.c);
-					float ts = (float)Math.Sqrt(ta * ta + tc * tc);
-					float s = bs > 0.00001f ? (bs + (ts - bs + data.offsetScaleX) * scaleMix) / bs : 0;
-					bone.a *= s;
-					bone.c *= s;
-					bs = (float)Math.Sqrt(bone.b * bone.b + bone.d * bone.d);
-					ts = (float)Math.Sqrt(tb * tb + td * td);
-					s = bs > 0.00001f ? (bs + (ts - bs + data.offsetScaleY) * scaleMix) / bs : 0;
-					bone.b *= s;
-					bone.d *= s;
-				}
+                if (translateMix > 0)
+                {
+                    float tempx, tempy;
+                    target.LocalToWorld(data.offsetX, data.offsetY, out tempx, out tempy);
+                    bone.worldX += (tempx - bone.worldX) * translateMix;
+                    bone.worldY += (tempy - bone.worldY) * translateMix;
+                }
 
-				if (shearMix > 0) {
-					float b = bone.b, d = bone.d;
-					float by = MathUtils.Atan2(d, b);
-					float r = MathUtils.Atan2(td, tb) - MathUtils.Atan2(tc, ta) - (by - MathUtils.Atan2(bone.c, bone.a));
-					if (r > MathUtils.PI)
-						r -= MathUtils.PI2;
-					else if (r < -MathUtils.PI) r += MathUtils.PI2;
-					r = by + (r + data.offsetShearY * MathUtils.degRad) * shearMix;
-					float s = (float)Math.Sqrt(b * b + d * d);
-					bone.b = MathUtils.Cos(r) * s;
-					bone.d = MathUtils.Sin(r) * s;
-				}
-			}
-		}
+                if (scaleMix > 0)
+                {
+                    float bs = (float)Math.Sqrt(bone.a * bone.a + bone.c * bone.c);
+                    float ts = (float)Math.Sqrt(ta * ta + tc * tc);
+                    float s = bs > 0.00001f ? (bs + (ts - bs + data.offsetScaleX) * scaleMix) / bs : 0;
+                    bone.a *= s;
+                    bone.c *= s;
+                    bs = (float)Math.Sqrt(bone.b * bone.b + bone.d * bone.d);
+                    ts = (float)Math.Sqrt(tb * tb + td * td);
+                    s = bs > 0.00001f ? (bs + (ts - bs + data.offsetScaleY) * scaleMix) / bs : 0;
+                    bone.b *= s;
+                    bone.d *= s;
+                }
 
-		override public String ToString () {
-			return data.name;
-		}
-	}
+                if (shearMix > 0)
+                {
+                    float b = bone.b, d = bone.d;
+                    float by = MathUtils.Atan2(d, b);
+                    float r = MathUtils.Atan2(td, tb) - MathUtils.Atan2(tc, ta) - (by - MathUtils.Atan2(bone.c, bone.a));
+                    if (r > MathUtils.PI)
+                        r -= MathUtils.PI2;
+                    else if (r < -MathUtils.PI) r += MathUtils.PI2;
+                    r = by + (r + data.offsetShearY * MathUtils.degRad) * shearMix;
+                    float s = (float)Math.Sqrt(b * b + d * d);
+                    bone.b = MathUtils.Cos(r) * s;
+                    bone.d = MathUtils.Sin(r) * s;
+                }
+            }
+        }
+
+        override public String ToString()
+        {
+            return data.name;
+        }
+    }
 }

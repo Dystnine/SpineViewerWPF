@@ -30,29 +30,32 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine3_1_07 {
-	public class TransformConstraintData {
-		internal String name;
-		internal BoneData bone, target;
-		internal float translateMix;
-		internal float x, y;
+namespace Spine3_1_07
+{
+    public class TransformConstraintData
+    {
+        internal String name;
+        internal BoneData bone, target;
+        internal float translateMix;
+        internal float x, y;
 
-		public String Name { get { return name; } }
-		public BoneData Bone { get { return bone; } set { bone = value; } }
-		public BoneData Target { get { return target; } set { target = value; } }
-		public float TranslateMix { get { return translateMix; } set { translateMix = value; } }
-		public float X { get { return x; } set { x = value; } }
-		public float Y { get { return y; } set { y = value; } }
+        public String Name { get { return name; } }
+        public BoneData Bone { get { return bone; } set { bone = value; } }
+        public BoneData Target { get { return target; } set { target = value; } }
+        public float TranslateMix { get { return translateMix; } set { translateMix = value; } }
+        public float X { get { return x; } set { x = value; } }
+        public float Y { get { return y; } set { y = value; } }
 
-		public TransformConstraintData (String name) {
-			if (name == null) throw new ArgumentNullException("name cannot be null.");
-			this.name = name;
-		}
+        public TransformConstraintData(String name)
+        {
+            if (name == null) throw new ArgumentNullException("name cannot be null.");
+            this.name = name;
+        }
 
-		override public String ToString () {
-			return name;
-		}
-	}
+        override public String ToString()
+        {
+            return name;
+        }
+    }
 }

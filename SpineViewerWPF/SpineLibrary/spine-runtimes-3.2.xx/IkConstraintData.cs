@@ -32,27 +32,31 @@
 using System;
 using System.Collections.Generic;
 
-namespace Spine3_2_xx {
-	public class IkConstraintData {
-		internal String name;
-		internal List<BoneData> bones = new List<BoneData>();
-		internal BoneData target;
-		internal int bendDirection = 1;
-		internal float mix = 1;
+namespace Spine3_2_xx
+{
+    public class IkConstraintData
+    {
+        internal String name;
+        internal List<BoneData> bones = new List<BoneData>();
+        internal BoneData target;
+        internal int bendDirection = 1;
+        internal float mix = 1;
 
-		public String Name { get { return name; } }
-		public List<BoneData> Bones { get { return bones; } }
-		public BoneData Target { get { return target; } set { target = value; } }
-		public int BendDirection { get { return bendDirection; } set { bendDirection = value; } }
-		public float Mix { get { return mix; } set { mix = value; } }
+        public String Name { get { return name; } }
+        public List<BoneData> Bones { get { return bones; } }
+        public BoneData Target { get { return target; } set { target = value; } }
+        public int BendDirection { get { return bendDirection; } set { bendDirection = value; } }
+        public float Mix { get { return mix; } set { mix = value; } }
 
-		public IkConstraintData (String name) {
-			if (name == null) throw new ArgumentNullException("name cannot be null.");
-			this.name = name;
-		}
+        public IkConstraintData(String name)
+        {
+            if (name == null) throw new ArgumentNullException("name cannot be null.");
+            this.name = name;
+        }
 
-		override public String ToString () {
-			return name;
-		}
-	}
+        override public String ToString()
+        {
+            return name;
+        }
+    }
 }

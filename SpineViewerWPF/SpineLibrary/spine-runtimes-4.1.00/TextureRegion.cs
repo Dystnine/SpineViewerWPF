@@ -31,19 +31,15 @@
 #define IS_UNITY
 #endif
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
 
+namespace Spine4_1_00
+{
+    public class TextureRegion
+    {
+        public int width, height;
+        public float u, v, u2, v2;
 
-namespace Spine4_1_00 {
-	public class TextureRegion {
-		public int width, height;
-		public float u, v, u2, v2;
-
-		virtual public int OriginalWidth { get { return width; } }
-		virtual public int OriginalHeight { get { return height; } }
-	}
+        virtual public int OriginalWidth { get { return width; } }
+        virtual public int OriginalHeight { get { return height; } }
+    }
 }

@@ -1,11 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
+using Microsoft.Xna.Framework.Graphics;
 using WpfXnaControl;
 
 namespace SpineViewerWPF
@@ -30,9 +25,9 @@ namespace SpineViewerWPF
         public static int recordImageCount;
         public static double canvasWidth = SystemParameters.WorkArea.Width;
         public static double canvasHeight = SystemParameters.WorkArea.Height;
-        public static double mainWidth ;
-        public static double mainHeight ;
+        public static double mainWidth;
+        public static double mainHeight;
 
-        public static  string tempDirPath = $"{App.rootDir}\\Temp\\";
+        public static string tempDirPath = $"{App.rootDir}\\Temp\\";
     }
 }

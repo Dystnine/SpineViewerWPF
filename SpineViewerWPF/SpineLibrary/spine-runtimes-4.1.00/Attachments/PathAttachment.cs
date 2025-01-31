@@ -28,38 +28,42 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine4_1_00 {
-	public class PathAttachment : VertexAttachment {
-		internal float[] lengths;
-		internal bool closed, constantSpeed;
+namespace Spine4_1_00
+{
+    public class PathAttachment : VertexAttachment
+    {
+        internal float[] lengths;
+        internal bool closed, constantSpeed;
 
-		/// <summary>The length in the setup pose from the start of the path to the end of each curve.</summary>
-		public float[] Lengths { get { return lengths; } set { lengths = value; } }
-		/// <summary>If true, the start and end knots are connected.</summary>
-		public bool Closed { get { return closed; } set { closed = value; } }
-		/// <summary>If true, additional calculations are performed to make computing positions along the path more accurate and movement along
-		/// the path have a constant speed.</summary>
-		public bool ConstantSpeed { get { return constantSpeed; } set { constantSpeed = value; } }
+        /// <summary>The length in the setup pose from the start of the path to the end of each curve.</summary>
+        public float[] Lengths { get { return lengths; } set { lengths = value; } }
+        /// <summary>If true, the start and end knots are connected.</summary>
+        public bool Closed { get { return closed; } set { closed = value; } }
+        /// <summary>If true, additional calculations are performed to make computing positions along the path more accurate and movement along
+        /// the path have a constant speed.</summary>
+        public bool ConstantSpeed { get { return constantSpeed; } set { constantSpeed = value; } }
 
-		public PathAttachment (String name)
-			: base(name) {
-		}
+        public PathAttachment(String name)
+            : base(name)
+        {
+        }
 
-		/// <summary>Copy constructor.</summary>
-		protected PathAttachment (PathAttachment other)
-			: base(other) {
+        /// <summary>Copy constructor.</summary>
+        protected PathAttachment(PathAttachment other)
+            : base(other)
+        {
 
-			lengths = new float[other.lengths.Length];
-			Array.Copy(other.lengths, 0, lengths, 0, lengths.Length);
+            lengths = new float[other.lengths.Length];
+            Array.Copy(other.lengths, 0, lengths, 0, lengths.Length);
 
-			closed = other.closed;
-			constantSpeed = other.constantSpeed;
-		}
+            closed = other.closed;
+            constantSpeed = other.constantSpeed;
+        }
 
-		public override Attachment Copy () {
-			return new PathAttachment(this);
-		}
-	}
+        public override Attachment Copy()
+        {
+            return new PathAttachment(this);
+        }
+    }
 }

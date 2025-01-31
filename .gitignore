@@ -1,3 +1,4 @@
 /SpineViewerWPF/bin
 /SpineViewerWPF/obj
-/packages
+/.vs
+/MigrationBackup

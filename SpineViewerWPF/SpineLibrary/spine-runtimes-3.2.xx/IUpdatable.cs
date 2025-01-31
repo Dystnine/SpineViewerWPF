@@ -29,10 +29,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-using System;
-
-namespace Spine3_2_xx {
-	public interface IUpdatable {
-		void Update ();
-	}
+namespace Spine3_2_xx
+{
+    public interface IUpdatable
+    {
+        void Update();
+    }
 }

@@ -30,144 +30,160 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine3_1_07 {
-	public class SkeletonData {
-		internal String name;
-		internal ExposedList<BoneData> bones = new ExposedList<BoneData>();
-		internal ExposedList<SlotData> slots = new ExposedList<SlotData>();
-		internal ExposedList<Skin> skins = new ExposedList<Skin>();
-		internal Skin defaultSkin;
-		internal ExposedList<EventData> events = new ExposedList<EventData>();
-		internal ExposedList<Animation> animations = new ExposedList<Animation>();
-		internal ExposedList<IkConstraintData> ikConstraints = new ExposedList<IkConstraintData>();
-		internal ExposedList<TransformConstraintData> transformConstraints = new ExposedList<TransformConstraintData>();
-		internal float width, height;
-		internal String version, hash, imagesPath;
+namespace Spine3_1_07
+{
+    public class SkeletonData
+    {
+        internal String name;
+        internal ExposedList<BoneData> bones = new ExposedList<BoneData>();
+        internal ExposedList<SlotData> slots = new ExposedList<SlotData>();
+        internal ExposedList<Skin> skins = new ExposedList<Skin>();
+        internal Skin defaultSkin;
+        internal ExposedList<EventData> events = new ExposedList<EventData>();
+        internal ExposedList<Animation> animations = new ExposedList<Animation>();
+        internal ExposedList<IkConstraintData> ikConstraints = new ExposedList<IkConstraintData>();
+        internal ExposedList<TransformConstraintData> transformConstraints = new ExposedList<TransformConstraintData>();
+        internal float width, height;
+        internal String version, hash, imagesPath;
 
-		public String Name { get { return name; } set { name = value; } }
-		public ExposedList<BoneData> Bones { get { return bones; } } // Ordered parents first.
-		public ExposedList<SlotData> Slots { get { return slots; } } // Setup pose draw order.
-		public ExposedList<Skin> Skins { get { return skins; } set { skins = value; } }
-		/// <summary>May be null.</summary>
-		public Skin DefaultSkin { get { return defaultSkin; } set { defaultSkin = value; } }
-		public ExposedList<EventData> Events { get { return events; } set { events = value; } }
-		public ExposedList<Animation> Animations { get { return animations; } set { animations = value; } }
-		public ExposedList<IkConstraintData> IkConstraints { get { return ikConstraints; } set { ikConstraints = value; } }
-		public float Width { get { return width; } set { width = value; } }
-		public float Height { get { return height; } set { height = value; } }
-		/// <summary>The Spine version used to export this data.</summary>
-		public String Version { get { return version; } set { version = value; } }
-		public String Hash { get { return hash; } set { hash = value; } }
+        public String Name { get { return name; } set { name = value; } }
+        public ExposedList<BoneData> Bones { get { return bones; } } // Ordered parents first.
+        public ExposedList<SlotData> Slots { get { return slots; } } // Setup pose draw order.
+        public ExposedList<Skin> Skins { get { return skins; } set { skins = value; } }
+        /// <summary>May be null.</summary>
+        public Skin DefaultSkin { get { return defaultSkin; } set { defaultSkin = value; } }
+        public ExposedList<EventData> Events { get { return events; } set { events = value; } }
+        public ExposedList<Animation> Animations { get { return animations; } set { animations = value; } }
+        public ExposedList<IkConstraintData> IkConstraints { get { return ikConstraints; } set { ikConstraints = value; } }
+        public float Width { get { return width; } set { width = value; } }
+        public float Height { get { return height; } set { height = value; } }
+        /// <summary>The Spine version used to export this data.</summary>
+        public String Version { get { return version; } set { version = value; } }
+        public String Hash { get { return hash; } set { hash = value; } }
 
-		// --- Bones.
+        // --- Bones.
 
-		/// <returns>May be null.</returns>
-		public BoneData FindBone (String boneName) {
-			if (boneName == null) throw new ArgumentNullException("boneName cannot be null.");
-			ExposedList<BoneData> bones = this.bones;
-			for (int i = 0, n = bones.Count; i < n; i++) {
-				BoneData bone = bones.Items[i];
-				if (bone.name == boneName) return bone;
-			}
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public BoneData FindBone(String boneName)
+        {
+            if (boneName == null) throw new ArgumentNullException("boneName cannot be null.");
+            ExposedList<BoneData> bones = this.bones;
+            for (int i = 0, n = bones.Count; i < n; i++)
+            {
+                BoneData bone = bones.Items[i];
+                if (bone.name == boneName) return bone;
+            }
+            return null;
+        }
 
-		/// <returns>-1 if the bone was not found.</returns>
-		public int FindBoneIndex (String boneName) {
-			if (boneName == null) throw new ArgumentNullException("boneName cannot be null.");
-			ExposedList<BoneData> bones = this.bones;
-			for (int i = 0, n = bones.Count; i < n; i++)
-				if (bones.Items[i].name == boneName) return i;
-			return -1;
-		}
+        /// <returns>-1 if the bone was not found.</returns>
+        public int FindBoneIndex(String boneName)
+        {
+            if (boneName == null) throw new ArgumentNullException("boneName cannot be null.");
+            ExposedList<BoneData> bones = this.bones;
+            for (int i = 0, n = bones.Count; i < n; i++)
+                if (bones.Items[i].name == boneName) return i;
+            return -1;
+        }
 
-		// --- Slots.
+        // --- Slots.
 
-		/// <returns>May be null.</returns>
-		public SlotData FindSlot (String slotName) {
-			if (slotName == null) throw new ArgumentNullException("slotName cannot be null.");
-			ExposedList<SlotData> slots = this.slots;
-			for (int i = 0, n = slots.Count; i < n; i++) {
-				SlotData slot = slots.Items[i];
-				if (slot.name == slotName) return slot;
-			}
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public SlotData FindSlot(String slotName)
+        {
+            if (slotName == null) throw new ArgumentNullException("slotName cannot be null.");
+            ExposedList<SlotData> slots = this.slots;
+            for (int i = 0, n = slots.Count; i < n; i++)
+            {
+                SlotData slot = slots.Items[i];
+                if (slot.name == slotName) return slot;
+            }
+            return null;
+        }
 
-		/// <returns>-1 if the bone was not found.</returns>
-		public int FindSlotIndex (String slotName) {
-			if (slotName == null) throw new ArgumentNullException("slotName cannot be null.");
-			ExposedList<SlotData> slots = this.slots;
-			for (int i = 0, n = slots.Count; i < n; i++)
-				if (slots.Items[i].name == slotName) return i;
-			return -1;
-		}
+        /// <returns>-1 if the bone was not found.</returns>
+        public int FindSlotIndex(String slotName)
+        {
+            if (slotName == null) throw new ArgumentNullException("slotName cannot be null.");
+            ExposedList<SlotData> slots = this.slots;
+            for (int i = 0, n = slots.Count; i < n; i++)
+                if (slots.Items[i].name == slotName) return i;
+            return -1;
+        }
 
-		// --- Skins.
+        // --- Skins.
 
-		/// <returns>May be null.</returns>
-		public Skin FindSkin (String skinName) {
-			if (skinName == null) throw new ArgumentNullException("skinName cannot be null.");
-			foreach (Skin skin in skins)
-				if (skin.name == skinName) return skin;
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public Skin FindSkin(String skinName)
+        {
+            if (skinName == null) throw new ArgumentNullException("skinName cannot be null.");
+            foreach (Skin skin in skins)
+                if (skin.name == skinName) return skin;
+            return null;
+        }
 
-		// --- Events.
+        // --- Events.
 
-		/// <returns>May be null.</returns>
-		public EventData FindEvent (String eventDataName) {
-			if (eventDataName == null) throw new ArgumentNullException("eventDataName cannot be null.");
-			foreach (EventData eventData in events)
-				if (eventData.name == eventDataName) return eventData;
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public EventData FindEvent(String eventDataName)
+        {
+            if (eventDataName == null) throw new ArgumentNullException("eventDataName cannot be null.");
+            foreach (EventData eventData in events)
+                if (eventData.name == eventDataName) return eventData;
+            return null;
+        }
 
-		// --- Animations.
+        // --- Animations.
 
-		/// <returns>May be null.</returns>
-		public Animation FindAnimation (String animationName) {
-			if (animationName == null) throw new ArgumentNullException("animationName cannot be null.");
-			ExposedList<Animation> animations = this.animations;
-			for (int i = 0, n = animations.Count; i < n; i++) {
-				Animation animation = animations.Items[i];
-				if (animation.name == animationName) return animation;
-			}
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public Animation FindAnimation(String animationName)
+        {
+            if (animationName == null) throw new ArgumentNullException("animationName cannot be null.");
+            ExposedList<Animation> animations = this.animations;
+            for (int i = 0, n = animations.Count; i < n; i++)
+            {
+                Animation animation = animations.Items[i];
+                if (animation.name == animationName) return animation;
+            }
+            return null;
+        }
 
-		// --- IK constraints.
+        // --- IK constraints.
 
-		/// <returns>May be null.</returns>
-		public IkConstraintData FindIkConstraint (String constraintName) {
-			if (constraintName == null) throw new ArgumentNullException("constraintName cannot be null.");
-			ExposedList<IkConstraintData> ikConstraints = this.ikConstraints;
-			for (int i = 0, n = ikConstraints.Count; i < n; i++) {
-				IkConstraintData ikConstraint = ikConstraints.Items[i];
-				if (ikConstraint.name == constraintName) return ikConstraint;
-			}
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public IkConstraintData FindIkConstraint(String constraintName)
+        {
+            if (constraintName == null) throw new ArgumentNullException("constraintName cannot be null.");
+            ExposedList<IkConstraintData> ikConstraints = this.ikConstraints;
+            for (int i = 0, n = ikConstraints.Count; i < n; i++)
+            {
+                IkConstraintData ikConstraint = ikConstraints.Items[i];
+                if (ikConstraint.name == constraintName) return ikConstraint;
+            }
+            return null;
+        }
 
-		// --- Transform constraints.
+        // --- Transform constraints.
 
-		/// <returns>May be null.</returns>
-		public TransformConstraintData FindTransformConstraint (String constraintName) {
-			if (constraintName == null) throw new ArgumentNullException("constraintName cannot be null.");
-			ExposedList<TransformConstraintData> transformConstraints = this.transformConstraints;
-			for (int i = 0, n = transformConstraints.Count; i < n; i++) {
-				TransformConstraintData transformConstraint = transformConstraints.Items[i];
-				if (transformConstraint.name == constraintName) return transformConstraint;
-			}
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public TransformConstraintData FindTransformConstraint(String constraintName)
+        {
+            if (constraintName == null) throw new ArgumentNullException("constraintName cannot be null.");
+            ExposedList<TransformConstraintData> transformConstraints = this.transformConstraints;
+            for (int i = 0, n = transformConstraints.Count; i < n; i++)
+            {
+                TransformConstraintData transformConstraint = transformConstraints.Items[i];
+                if (transformConstraint.name == constraintName) return transformConstraint;
+            }
+            return null;
+        }
 
-		// ---
+        // ---
 
-		override public String ToString () {
-			return name ?? base.ToString();
-		}
-	}
+        override public String ToString()
+        {
+            return name ?? base.ToString();
+        }
+    }
 }

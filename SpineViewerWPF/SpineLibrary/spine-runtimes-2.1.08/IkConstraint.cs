@@ -31,118 +31,134 @@
 using System;
 using System.Collections.Generic;
 
-namespace Spine2_1_08 {
-	public class IkConstraint {
-		private const float radDeg = 180 / (float)Math.PI;
+namespace Spine2_1_08
+{
+    public class IkConstraint
+    {
+        private const float radDeg = 180 / (float)Math.PI;
 
-		internal IkConstraintData data;
-		internal List<Bone> bones = new List<Bone>();
-		internal Bone target;
-		internal int bendDirection;
-		internal float mix;
+        internal IkConstraintData data;
+        internal List<Bone> bones = new List<Bone>();
+        internal Bone target;
+        internal int bendDirection;
+        internal float mix;
 
-		public IkConstraintData Data { get { return data; } }
-		public List<Bone> Bones { get { return bones; } }
-		public Bone Target { get { return target; } set { target = value; } }
-		public int BendDirection { get { return bendDirection; } set { bendDirection = value; } }
-		public float Mix { get { return mix; } set { mix = value; } }
+        public IkConstraintData Data { get { return data; } }
+        public List<Bone> Bones { get { return bones; } }
+        public Bone Target { get { return target; } set { target = value; } }
+        public int BendDirection { get { return bendDirection; } set { bendDirection = value; } }
+        public float Mix { get { return mix; } set { mix = value; } }
 
-		public IkConstraint (IkConstraintData data, Skeleton skeleton) {
-			if (data == null) throw new ArgumentNullException("data cannot be null.");
-			if (skeleton == null) throw new ArgumentNullException("skeleton cannot be null.");
-			this.data = data;
-			mix = data.mix;
-			bendDirection = data.bendDirection;
+        public IkConstraint(IkConstraintData data, Skeleton skeleton)
+        {
+            if (data == null) throw new ArgumentNullException("data cannot be null.");
+            if (skeleton == null) throw new ArgumentNullException("skeleton cannot be null.");
+            this.data = data;
+            mix = data.mix;
+            bendDirection = data.bendDirection;
 
-			bones = new List<Bone>(data.bones.Count);
-			foreach (BoneData boneData in data.bones)
-				bones.Add(skeleton.FindBone(boneData.name));
-			target = skeleton.FindBone(data.target.name);
-		}
+            bones = new List<Bone>(data.bones.Count);
+            foreach (BoneData boneData in data.bones)
+                bones.Add(skeleton.FindBone(boneData.name));
+            target = skeleton.FindBone(data.target.name);
+        }
 
-		public void apply () {
-			Bone target = this.target;
-			List<Bone> bones = this.bones;
-			switch (bones.Count) {
-			case 1:
-				apply(bones[0], target.worldX, target.worldY, mix);
-				break;
-			case 2:
-				apply(bones[0], bones[1], target.worldX, target.worldY, bendDirection, mix);
-				break;
-			}
-		}
+        public void apply()
+        {
+            Bone target = this.target;
+            List<Bone> bones = this.bones;
+            switch (bones.Count)
+            {
+                case 1:
+                    apply(bones[0], target.worldX, target.worldY, mix);
+                    break;
+                case 2:
+                    apply(bones[0], bones[1], target.worldX, target.worldY, bendDirection, mix);
+                    break;
+            }
+        }
 
-		override public String ToString () {
-			return data.name;
-		}
+        override public String ToString()
+        {
+            return data.name;
+        }
 
-		/// <summary>Adjusts the bone rotation so the tip is as close to the target position as possible. The target is specified
-		/// in the world coordinate system.</summary>
-		static public void apply (Bone bone, float targetX, float targetY, float alpha) {
-			float parentRotation = (!bone.data.inheritRotation || bone.parent == null) ? 0 : bone.parent.worldRotation;
-			float rotation = bone.rotation;
-			float rotationIK = (float)Math.Atan2(targetY - bone.worldY, targetX - bone.worldX) * radDeg - parentRotation;
-			bone.rotationIK = rotation + (rotationIK - rotation) * alpha;
-		}
+        /// <summary>Adjusts the bone rotation so the tip is as close to the target position as possible. The target is specified
+        /// in the world coordinate system.</summary>
+        static public void apply(Bone bone, float targetX, float targetY, float alpha)
+        {
+            float parentRotation = (!bone.data.inheritRotation || bone.parent == null) ? 0 : bone.parent.worldRotation;
+            float rotation = bone.rotation;
+            float rotationIK = (float)Math.Atan2(targetY - bone.worldY, targetX - bone.worldX) * radDeg - parentRotation;
+            bone.rotationIK = rotation + (rotationIK - rotation) * alpha;
+        }
 
-		/// <summary>Adjusts the parent and child bone rotations so the tip of the child is as close to the target position as
-		/// possible. The target is specified in the world coordinate system.</summary>
-		/// <param name="child">Any descendant bone of the parent.</param>
-		static public void apply (Bone parent, Bone child, float targetX, float targetY, int bendDirection, float alpha) {
-			float childRotation = child.rotation, parentRotation = parent.rotation;
-			if (alpha == 0) {
-				child.rotationIK = childRotation;
-				parent.rotationIK = parentRotation;
-				return;
-			}
-			float positionX, positionY;
-			Bone parentParent = parent.parent;
-			if (parentParent != null) {
-				parentParent.worldToLocal(targetX, targetY, out positionX, out positionY);
-				targetX = (positionX - parent.x) * parentParent.worldScaleX;
-				targetY = (positionY - parent.y) * parentParent.worldScaleY;
-			} else {
-				targetX -= parent.x;
-				targetY -= parent.y;
-			}
-			if (child.parent == parent) {
-				positionX = child.x;
-				positionY = child.y;
-			} else {
-				child.parent.localToWorld(child.x, child.y, out positionX, out positionY);
-				parent.worldToLocal(positionX, positionY, out positionX, out positionY);
-			}
-			float childX = positionX * parent.worldScaleX, childY = positionY * parent.worldScaleY;
-			float offset = (float)Math.Atan2(childY, childX);
-			float len1 = (float)Math.Sqrt(childX * childX + childY * childY), len2 = child.data.length * child.worldScaleX;
-			// Based on code by Ryan Juckett with permission: Copyright (c) 2008-2009 Ryan Juckett, http://www.ryanjuckett.com/
-			float cosDenom = 2 * len1 * len2;
-			if (cosDenom < 0.0001f) {
-				child.rotationIK = childRotation + ((float)Math.Atan2(targetY, targetX) * radDeg - parentRotation - childRotation)
-					* alpha;
-				return;
-			}
-			float cos = (targetX * targetX + targetY * targetY - len1 * len1 - len2 * len2) / cosDenom;
-			if (cos < -1)
-				cos = -1;
-			else if (cos > 1)
-				cos = 1;
-			float childAngle = (float)Math.Acos(cos) * bendDirection;
-			float adjacent = len1 + len2 * cos, opposite = len2 * (float)Math.Sin(childAngle);
-			float parentAngle = (float)Math.Atan2(targetY * adjacent - targetX * opposite, targetX * adjacent + targetY * opposite);
-			float rotation = (parentAngle - offset) * radDeg - parentRotation;
-			if (rotation > 180)
-				rotation -= 360;
-			else if (rotation < -180) //
-				rotation += 360;
-			parent.rotationIK = parentRotation + rotation * alpha;
-			rotation = (childAngle + offset) * radDeg - childRotation;
-			if (rotation > 180)
-				rotation -= 360;
-			else if (rotation < -180) //
-				rotation += 360;
-			child.rotationIK = childRotation + (rotation + parent.worldRotation - child.parent.worldRotation) * alpha;
-		}
-	}
+        /// <summary>Adjusts the parent and child bone rotations so the tip of the child is as close to the target position as
+        /// possible. The target is specified in the world coordinate system.</summary>
+        /// <param name="child">Any descendant bone of the parent.</param>
+        static public void apply(Bone parent, Bone child, float targetX, float targetY, int bendDirection, float alpha)
+        {
+            float childRotation = child.rotation, parentRotation = parent.rotation;
+            if (alpha == 0)
+            {
+                child.rotationIK = childRotation;
+                parent.rotationIK = parentRotation;
+                return;
+            }
+            float positionX, positionY;
+            Bone parentParent = parent.parent;
+            if (parentParent != null)
+            {
+                parentParent.worldToLocal(targetX, targetY, out positionX, out positionY);
+                targetX = (positionX - parent.x) * parentParent.worldScaleX;
+                targetY = (positionY - parent.y) * parentParent.worldScaleY;
+            }
+            else
+            {
+                targetX -= parent.x;
+                targetY -= parent.y;
+            }
+            if (child.parent == parent)
+            {
+                positionX = child.x;
+                positionY = child.y;
+            }
+            else
+            {
+                child.parent.localToWorld(child.x, child.y, out positionX, out positionY);
+                parent.worldToLocal(positionX, positionY, out positionX, out positionY);
+            }
+            float childX = positionX * parent.worldScaleX, childY = positionY * parent.worldScaleY;
+            float offset = (float)Math.Atan2(childY, childX);
+            float len1 = (float)Math.Sqrt(childX * childX + childY * childY), len2 = child.data.length * child.worldScaleX;
+            // Based on code by Ryan Juckett with permission: Copyright (c) 2008-2009 Ryan Juckett, http://www.ryanjuckett.com/
+            float cosDenom = 2 * len1 * len2;
+            if (cosDenom < 0.0001f)
+            {
+                child.rotationIK = childRotation + ((float)Math.Atan2(targetY, targetX) * radDeg - parentRotation - childRotation)
+                    * alpha;
+                return;
+            }
+            float cos = (targetX * targetX + targetY * targetY - len1 * len1 - len2 * len2) / cosDenom;
+            if (cos < -1)
+                cos = -1;
+            else if (cos > 1)
+                cos = 1;
+            float childAngle = (float)Math.Acos(cos) * bendDirection;
+            float adjacent = len1 + len2 * cos, opposite = len2 * (float)Math.Sin(childAngle);
+            float parentAngle = (float)Math.Atan2(targetY * adjacent - targetX * opposite, targetX * adjacent + targetY * opposite);
+            float rotation = (parentAngle - offset) * radDeg - parentRotation;
+            if (rotation > 180)
+                rotation -= 360;
+            else if (rotation < -180) //
+                rotation += 360;
+            parent.rotationIK = parentRotation + rotation * alpha;
+            rotation = (childAngle + offset) * radDeg - childRotation;
+            if (rotation > 180)
+                rotation -= 360;
+            else if (rotation < -180) //
+                rotation += 360;
+            child.rotationIK = childRotation + (rotation + parent.worldRotation - child.parent.worldRotation) * alpha;
+        }
+    }
 }

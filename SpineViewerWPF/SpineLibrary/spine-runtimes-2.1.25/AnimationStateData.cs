@@ -31,40 +31,46 @@
 using System;
 using System.Collections.Generic;
 
-namespace Spine2_1_25 {
-	public class AnimationStateData {
-		internal SkeletonData skeletonData;
-		private Dictionary<KeyValuePair<Animation, Animation>, float> animationToMixTime = new Dictionary<KeyValuePair<Animation, Animation>, float>();
-		internal float defaultMix;
+namespace Spine2_1_25
+{
+    public class AnimationStateData
+    {
+        internal SkeletonData skeletonData;
+        private Dictionary<KeyValuePair<Animation, Animation>, float> animationToMixTime = new Dictionary<KeyValuePair<Animation, Animation>, float>();
+        internal float defaultMix;
 
-		public SkeletonData SkeletonData { get { return skeletonData; } }
-		public float DefaultMix { get { return defaultMix; } set { defaultMix = value; } }
+        public SkeletonData SkeletonData { get { return skeletonData; } }
+        public float DefaultMix { get { return defaultMix; } set { defaultMix = value; } }
 
-		public AnimationStateData (SkeletonData skeletonData) {
-			this.skeletonData = skeletonData;
-		}
+        public AnimationStateData(SkeletonData skeletonData)
+        {
+            this.skeletonData = skeletonData;
+        }
 
-		public void SetMix (String fromName, String toName, float duration) {
-			Animation from = skeletonData.FindAnimation(fromName);
-			if (from == null) throw new ArgumentException("Animation not found: " + fromName);
-			Animation to = skeletonData.FindAnimation(toName);
-			if (to == null) throw new ArgumentException("Animation not found: " + toName);
-			SetMix(from, to, duration);
-		}
+        public void SetMix(String fromName, String toName, float duration)
+        {
+            Animation from = skeletonData.FindAnimation(fromName);
+            if (from == null) throw new ArgumentException("Animation not found: " + fromName);
+            Animation to = skeletonData.FindAnimation(toName);
+            if (to == null) throw new ArgumentException("Animation not found: " + toName);
+            SetMix(from, to, duration);
+        }
 
-		public void SetMix (Animation from, Animation to, float duration) {
-			if (from == null) throw new ArgumentNullException("from cannot be null.");
-			if (to == null) throw new ArgumentNullException("to cannot be null.");
-			KeyValuePair<Animation, Animation> key = new KeyValuePair<Animation, Animation>(from, to);
-			animationToMixTime.Remove(key);
-			animationToMixTime.Add(key, duration);
-		}
+        public void SetMix(Animation from, Animation to, float duration)
+        {
+            if (from == null) throw new ArgumentNullException("from cannot be null.");
+            if (to == null) throw new ArgumentNullException("to cannot be null.");
+            KeyValuePair<Animation, Animation> key = new KeyValuePair<Animation, Animation>(from, to);
+            animationToMixTime.Remove(key);
+            animationToMixTime.Add(key, duration);
+        }
 
-		public float GetMix (Animation from, Animation to) {
-			KeyValuePair<Animation, Animation> key = new KeyValuePair<Animation, Animation>(from, to);
-			float duration;
-			if (animationToMixTime.TryGetValue(key, out duration)) return duration;
-			return defaultMix;
-		}
-	}
+        public float GetMix(Animation from, Animation to)
+        {
+            KeyValuePair<Animation, Animation> key = new KeyValuePair<Animation, Animation>(from, to);
+            float duration;
+            if (animationToMixTime.TryGetValue(key, out duration)) return duration;
+            return defaultMix;
+        }
+    }
 }

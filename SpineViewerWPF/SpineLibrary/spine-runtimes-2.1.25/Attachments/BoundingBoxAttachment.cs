@@ -28,33 +28,36 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-using System;
+namespace Spine2_1_25
+{
+    /// <summary>Attachment that has a polygon for bounds checking.</summary>
+    public class BoundingBoxAttachment : Attachment
+    {
+        internal float[] vertices;
 
-namespace Spine2_1_25 {
-	/// <summary>Attachment that has a polygon for bounds checking.</summary>
-	public class BoundingBoxAttachment : Attachment {
-		internal float[] vertices;
+        public float[] Vertices { get { return vertices; } set { vertices = value; } }
 
-		public float[] Vertices { get { return vertices; } set { vertices = value; } }
+        public BoundingBoxAttachment(string name)
+            : base(name)
+        {
+        }
 
-		public BoundingBoxAttachment (string name)
-			: base(name) {
-		}
-
-		/// <param name="worldVertices">Must have at least the same length as this attachment's vertices.</param>
-		public void ComputeWorldVertices (Bone bone, float[] worldVertices) {
-			float x = bone.skeleton.x + bone.worldX, y = bone.skeleton.y + bone.worldY;
-			float m00 = bone.m00;
-			float m01 = bone.m01;
-			float m10 = bone.m10;
-			float m11 = bone.m11;
-			float[] vertices = this.vertices;
-			for (int i = 0, n = vertices.Length; i < n; i += 2) {
-				float px = vertices[i];
-				float py = vertices[i + 1];
-				worldVertices[i] = px * m00 + py * m01 + x;
-				worldVertices[i + 1] = px * m10 + py * m11 + y;
-			}
-		}
-	}
+        /// <param name="worldVertices">Must have at least the same length as this attachment's vertices.</param>
+        public void ComputeWorldVertices(Bone bone, float[] worldVertices)
+        {
+            float x = bone.skeleton.x + bone.worldX, y = bone.skeleton.y + bone.worldY;
+            float m00 = bone.m00;
+            float m01 = bone.m01;
+            float m10 = bone.m10;
+            float m11 = bone.m11;
+            float[] vertices = this.vertices;
+            for (int i = 0, n = vertices.Length; i < n; i += 2)
+            {
+                float px = vertices[i];
+                float py = vertices[i + 1];
+                worldVertices[i] = px * m00 + py * m01 + x;
+                worldVertices[i + 1] = px * m10 + py * m11 + y;
+            }
+        }
+    }
 }

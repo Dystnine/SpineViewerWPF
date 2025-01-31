@@ -30,17 +30,21 @@
 
 using System;
 
-namespace Spine3_5_51 {
-	abstract public class Attachment {
-		public String Name { get; private set; }
+namespace Spine3_5_51
+{
+    abstract public class Attachment
+    {
+        public String Name { get; private set; }
 
-		public Attachment (String name) {
-			if (name == null) throw new ArgumentNullException("name", "name cannot be null");
-			Name = name;
-		}
+        public Attachment(String name)
+        {
+            if (name == null) throw new ArgumentNullException("name", "name cannot be null");
+            Name = name;
+        }
 
-		override public String ToString () {
-			return Name;
-		}
-	}
+        override public String ToString()
+        {
+            return Name;
+        }
+    }
 }

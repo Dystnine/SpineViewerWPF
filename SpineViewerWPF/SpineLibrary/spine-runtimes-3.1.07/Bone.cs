@@ -30,214 +30,238 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine3_1_07 {
-	public class Bone : IUpdatable {
-		static public bool yDown;
+namespace Spine3_1_07
+{
+    public class Bone : IUpdatable
+    {
+        static public bool yDown;
 
-		internal BoneData data;
-		internal Skeleton skeleton;
-		internal Bone parent;
-		internal ExposedList<Bone> children = new ExposedList<Bone>();
-		internal float x, y, rotation, scaleX, scaleY;
-		internal float appliedRotation, appliedScaleX, appliedScaleY;
+        internal BoneData data;
+        internal Skeleton skeleton;
+        internal Bone parent;
+        internal ExposedList<Bone> children = new ExposedList<Bone>();
+        internal float x, y, rotation, scaleX, scaleY;
+        internal float appliedRotation, appliedScaleX, appliedScaleY;
 
-		internal float a, b, worldX;
-		internal float c, d, worldY;
-		internal float worldSignX, worldSignY;
+        internal float a, b, worldX;
+        internal float c, d, worldY;
+        internal float worldSignX, worldSignY;
 
-		public BoneData Data { get { return data; } }
-		public Skeleton Skeleton { get { return skeleton; } }
-		public Bone Parent { get { return parent; } }
-		public ExposedList<Bone> Children { get { return children; } }
-		public float X { get { return x; } set { x = value; } }
-		public float Y { get { return y; } set { y = value; } }
-		public float Rotation { get { return rotation; } set { rotation = value; } }
-		/// <summary>The rotation, as calculated by any constraints.</summary>
-		public float AppliedRotation { get { return appliedRotation; } set { appliedRotation = value; } }
-		/// <summary>The scale X, as calculated by any constraints.</summary>
-		public float AppliedScaleX { get { return appliedScaleX; } set { appliedScaleX = value; } }
-		/// <summary>The scale Y, as calculated by any constraints.</summary>
-		public float AppliedScaleY { get { return appliedScaleY; } set { appliedScaleY = value; } }
-		public float ScaleX { get { return scaleX; } set { scaleX = value; } }
-		public float ScaleY { get { return scaleY; } set { scaleY = value; } }
+        public BoneData Data { get { return data; } }
+        public Skeleton Skeleton { get { return skeleton; } }
+        public Bone Parent { get { return parent; } }
+        public ExposedList<Bone> Children { get { return children; } }
+        public float X { get { return x; } set { x = value; } }
+        public float Y { get { return y; } set { y = value; } }
+        public float Rotation { get { return rotation; } set { rotation = value; } }
+        /// <summary>The rotation, as calculated by any constraints.</summary>
+        public float AppliedRotation { get { return appliedRotation; } set { appliedRotation = value; } }
+        /// <summary>The scale X, as calculated by any constraints.</summary>
+        public float AppliedScaleX { get { return appliedScaleX; } set { appliedScaleX = value; } }
+        /// <summary>The scale Y, as calculated by any constraints.</summary>
+        public float AppliedScaleY { get { return appliedScaleY; } set { appliedScaleY = value; } }
+        public float ScaleX { get { return scaleX; } set { scaleX = value; } }
+        public float ScaleY { get { return scaleY; } set { scaleY = value; } }
 
-		public float A { get { return a; } }
-		public float B { get { return b; } }
-		public float C { get { return c; } }
-		public float D { get { return d; } }
-		public float WorldX { get { return worldX; } }
-		public float WorldY { get { return worldY; } }
-		public float WorldSignX { get { return worldSignX; } }
-		public float WorldSignY { get { return worldSignY; } }
-		public float WorldRotationX { get { return MathUtils.Atan2(c, a) * MathUtils.radDeg; } }
-		public float WorldRotationY { get { return MathUtils.Atan2(d, b) * MathUtils.radDeg; } }
-		public float WorldScaleX { get { return (float)Math.Sqrt(a * a + b * b) * worldSignX; } }
-		public float WorldScaleY { get { return (float)Math.Sqrt(c * c + d * d) * worldSignY; } }
+        public float A { get { return a; } }
+        public float B { get { return b; } }
+        public float C { get { return c; } }
+        public float D { get { return d; } }
+        public float WorldX { get { return worldX; } }
+        public float WorldY { get { return worldY; } }
+        public float WorldSignX { get { return worldSignX; } }
+        public float WorldSignY { get { return worldSignY; } }
+        public float WorldRotationX { get { return MathUtils.Atan2(c, a) * MathUtils.radDeg; } }
+        public float WorldRotationY { get { return MathUtils.Atan2(d, b) * MathUtils.radDeg; } }
+        public float WorldScaleX { get { return (float)Math.Sqrt(a * a + b * b) * worldSignX; } }
+        public float WorldScaleY { get { return (float)Math.Sqrt(c * c + d * d) * worldSignY; } }
 
-		/// <param name="parent">May be null.</param>
-		public Bone (BoneData data, Skeleton skeleton, Bone parent) {
-			if (data == null) throw new ArgumentNullException("data cannot be null.");
-			if (skeleton == null) throw new ArgumentNullException("skeleton cannot be null.");
-			this.data = data;
-			this.skeleton = skeleton;
-			this.parent = parent;
-			SetToSetupPose();
-		}
+        /// <param name="parent">May be null.</param>
+        public Bone(BoneData data, Skeleton skeleton, Bone parent)
+        {
+            if (data == null) throw new ArgumentNullException("data cannot be null.");
+            if (skeleton == null) throw new ArgumentNullException("skeleton cannot be null.");
+            this.data = data;
+            this.skeleton = skeleton;
+            this.parent = parent;
+            SetToSetupPose();
+        }
 
-		/// <summary>Same as {@link #updateWorldTransform()}. This method exists for Bone to implement {@link Updatable}.</summary>
-		public void Update () {
-			UpdateWorldTransform(x, y, rotation, scaleX, scaleY);
-		}
+        /// <summary>Same as {@link #updateWorldTransform()}. This method exists for Bone to implement {@link Updatable}.</summary>
+        public void Update()
+        {
+            UpdateWorldTransform(x, y, rotation, scaleX, scaleY);
+        }
 
-		/// <summary>Computes the world SRT using the parent bone and this bone's local SRT.</summary>
-		public void UpdateWorldTransform () {
-			UpdateWorldTransform(x, y, rotation, scaleX, scaleY);
-		}
+        /// <summary>Computes the world SRT using the parent bone and this bone's local SRT.</summary>
+        public void UpdateWorldTransform()
+        {
+            UpdateWorldTransform(x, y, rotation, scaleX, scaleY);
+        }
 
-		/// <summary>Computes the world SRT using the parent bone and the specified local SRT.</summary>
-		public void UpdateWorldTransform (float x, float y, float rotation, float scaleX, float scaleY) {
-			appliedRotation = rotation;
-			appliedScaleX = scaleX;
-			appliedScaleY = scaleY;
+        /// <summary>Computes the world SRT using the parent bone and the specified local SRT.</summary>
+        public void UpdateWorldTransform(float x, float y, float rotation, float scaleX, float scaleY)
+        {
+            appliedRotation = rotation;
+            appliedScaleX = scaleX;
+            appliedScaleY = scaleY;
 
-			float cos = MathUtils.CosDeg(rotation), sin = MathUtils.SinDeg(rotation);
-			float la = cos * scaleX, lb = -sin * scaleY, lc = sin * scaleX, ld = cos * scaleY;
-			Bone parent = this.parent;
-			if (parent == null) { // Root bone.
-				Skeleton skeleton = this.skeleton;
-				if (skeleton.flipX) {
-					x = -x;
-					la = -la;
-					lb = -lb;
-				}
-				if (skeleton.flipY != yDown) {
-					y = -y;
-					lc = -lc;
-					ld = -ld;
-				}
-				a = la;
-				b = lb;
-				c = lc;
-				d = ld;
-				worldX = x;
-				worldY = y;
-				worldSignX = Math.Sign(scaleX);
-				worldSignY = Math.Sign(scaleY);
-				return;
-			}
+            float cos = MathUtils.CosDeg(rotation), sin = MathUtils.SinDeg(rotation);
+            float la = cos * scaleX, lb = -sin * scaleY, lc = sin * scaleX, ld = cos * scaleY;
+            Bone parent = this.parent;
+            if (parent == null)
+            { // Root bone.
+                Skeleton skeleton = this.skeleton;
+                if (skeleton.flipX)
+                {
+                    x = -x;
+                    la = -la;
+                    lb = -lb;
+                }
+                if (skeleton.flipY != yDown)
+                {
+                    y = -y;
+                    lc = -lc;
+                    ld = -ld;
+                }
+                a = la;
+                b = lb;
+                c = lc;
+                d = ld;
+                worldX = x;
+                worldY = y;
+                worldSignX = Math.Sign(scaleX);
+                worldSignY = Math.Sign(scaleY);
+                return;
+            }
 
-			float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d;
-			worldX = pa * x + pb * y + parent.worldX;
-			worldY = pc * x + pd * y + parent.worldY;
-			worldSignX = parent.worldSignX * Math.Sign(scaleX);
-			worldSignY = parent.worldSignY * Math.Sign(scaleY);
+            float pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d;
+            worldX = pa * x + pb * y + parent.worldX;
+            worldY = pc * x + pd * y + parent.worldY;
+            worldSignX = parent.worldSignX * Math.Sign(scaleX);
+            worldSignY = parent.worldSignY * Math.Sign(scaleY);
 
-			if (data.inheritRotation && data.inheritScale) {
-				a = pa * la + pb * lc;
-				b = pa * lb + pb * ld;
-				c = pc * la + pd * lc;
-				d = pc * lb + pd * ld;
-			} else {
-				if (data.inheritRotation) { // No scale inheritance.
-					pa = 1;
-					pb = 0;
-					pc = 0;
-					pd = 1;
-					do {
-						cos = MathUtils.CosDeg(parent.appliedRotation);
-						sin = MathUtils.SinDeg(parent.appliedRotation);
-						float temp = pa * cos + pb * sin;
-						pb = pa * -sin + pb * cos;
-						pa = temp;
-						temp = pc * cos + pd * sin;
-						pd = pc * -sin + pd * cos;
-						pc = temp;
+            if (data.inheritRotation && data.inheritScale)
+            {
+                a = pa * la + pb * lc;
+                b = pa * lb + pb * ld;
+                c = pc * la + pd * lc;
+                d = pc * lb + pd * ld;
+            }
+            else
+            {
+                if (data.inheritRotation)
+                { // No scale inheritance.
+                    pa = 1;
+                    pb = 0;
+                    pc = 0;
+                    pd = 1;
+                    do
+                    {
+                        cos = MathUtils.CosDeg(parent.appliedRotation);
+                        sin = MathUtils.SinDeg(parent.appliedRotation);
+                        float temp = pa * cos + pb * sin;
+                        pb = pa * -sin + pb * cos;
+                        pa = temp;
+                        temp = pc * cos + pd * sin;
+                        pd = pc * -sin + pd * cos;
+                        pc = temp;
 
-						if (!parent.data.inheritRotation) break;
-						parent = parent.parent;
-					} while (parent != null);
-					a = pa * la + pb * lc;
-					b = pa * lb + pb * ld;
-					c = pc * la + pd * lc;
-					d = pc * lb + pd * ld;
-				} else if (data.inheritScale) { // No rotation inheritance.
-					pa = 1;
-					pb = 0;
-					pc = 0;
-					pd = 1;
-					do {
-						float r = parent.rotation;
-						cos = MathUtils.CosDeg(r);
-						sin = MathUtils.SinDeg(r);
-						float psx = parent.appliedScaleX, psy = parent.appliedScaleY;
-						float za = cos * psx, zb = -sin * psy, zc = sin * psx, zd = cos * psy;
-						float temp = pa * za + pb * zc;
-						pb = pa * zb + pb * zd;
-						pa = temp;
-						temp = pc * za + pd * zc;
-						pd = pc * zb + pd * zd;
-						pc = temp;
+                        if (!parent.data.inheritRotation) break;
+                        parent = parent.parent;
+                    } while (parent != null);
+                    a = pa * la + pb * lc;
+                    b = pa * lb + pb * ld;
+                    c = pc * la + pd * lc;
+                    d = pc * lb + pd * ld;
+                }
+                else if (data.inheritScale)
+                { // No rotation inheritance.
+                    pa = 1;
+                    pb = 0;
+                    pc = 0;
+                    pd = 1;
+                    do
+                    {
+                        float r = parent.rotation;
+                        cos = MathUtils.CosDeg(r);
+                        sin = MathUtils.SinDeg(r);
+                        float psx = parent.appliedScaleX, psy = parent.appliedScaleY;
+                        float za = cos * psx, zb = -sin * psy, zc = sin * psx, zd = cos * psy;
+                        float temp = pa * za + pb * zc;
+                        pb = pa * zb + pb * zd;
+                        pa = temp;
+                        temp = pc * za + pd * zc;
+                        pd = pc * zb + pd * zd;
+                        pc = temp;
 
-						if (psx < 0) r = -r;
-						cos = MathUtils.CosDeg(-r);
-						sin = MathUtils.SinDeg(-r);
-						temp = pa * cos + pb * sin;
-						pb = pa * -sin + pb * cos;
-						pa = temp;
-						temp = pc * cos + pd * sin;
-						pd = pc * -sin + pd * cos;
-						pc = temp;
+                        if (psx < 0) r = -r;
+                        cos = MathUtils.CosDeg(-r);
+                        sin = MathUtils.SinDeg(-r);
+                        temp = pa * cos + pb * sin;
+                        pb = pa * -sin + pb * cos;
+                        pa = temp;
+                        temp = pc * cos + pd * sin;
+                        pd = pc * -sin + pd * cos;
+                        pc = temp;
 
-						if (!parent.data.inheritScale) break;
-						parent = parent.parent;
-					} while (parent != null);
-					a = pa * la + pb * lc;
-					b = pa * lb + pb * ld;
-					c = pc * la + pd * lc;
-					d = pc * lb + pd * ld;
-				} else {
-					a = la;
-					b = lb;
-					c = lc;
-					d = ld;
-				}
-				if (skeleton.flipX) {
-					a = -a;
-					b = -b;
-				}
-				if (skeleton.flipY != yDown) {
-					c = -c;
-					d = -d;
-				}
-			}
-		}
+                        if (!parent.data.inheritScale) break;
+                        parent = parent.parent;
+                    } while (parent != null);
+                    a = pa * la + pb * lc;
+                    b = pa * lb + pb * ld;
+                    c = pc * la + pd * lc;
+                    d = pc * lb + pd * ld;
+                }
+                else
+                {
+                    a = la;
+                    b = lb;
+                    c = lc;
+                    d = ld;
+                }
+                if (skeleton.flipX)
+                {
+                    a = -a;
+                    b = -b;
+                }
+                if (skeleton.flipY != yDown)
+                {
+                    c = -c;
+                    d = -d;
+                }
+            }
+        }
 
-		public void SetToSetupPose () {
-			BoneData data = this.data;
-			x = data.x;
-			y = data.y;
-			rotation = data.rotation;
-			scaleX = data.scaleX;
-			scaleY = data.scaleY;
-		}
+        public void SetToSetupPose()
+        {
+            BoneData data = this.data;
+            x = data.x;
+            y = data.y;
+            rotation = data.rotation;
+            scaleX = data.scaleX;
+            scaleY = data.scaleY;
+        }
 
-		public void WorldToLocal (float worldX, float worldY, out float localX, out float localY) {
-			float x = worldX - this.worldX, y = worldY - this.worldY;
-			float a = this.a, b = this.b, c = this.c, d = this.d;
-			float invDet = 1 / (a * d - b * c);
-			localX = (x * d * invDet - y * b * invDet);
-			localY = (y * a * invDet - x * c * invDet);
-		}
+        public void WorldToLocal(float worldX, float worldY, out float localX, out float localY)
+        {
+            float x = worldX - this.worldX, y = worldY - this.worldY;
+            float a = this.a, b = this.b, c = this.c, d = this.d;
+            float invDet = 1 / (a * d - b * c);
+            localX = (x * d * invDet - y * b * invDet);
+            localY = (y * a * invDet - x * c * invDet);
+        }
 
-		public void LocalToWorld (float localX, float localY, out float worldX, out float worldY) {
-			worldX = localX * a + localY * b + this.worldX;
-			worldY = localX * c + localY * d + this.worldY;
-		}
+        public void LocalToWorld(float localX, float localY, out float worldX, out float worldY)
+        {
+            worldX = localX * a + localY * b + this.worldX;
+            worldY = localX * c + localY * d + this.worldY;
+        }
 
-		override public String ToString () {
-			return data.name;
-		}
-	}
+        override public String ToString()
+        {
+            return data.name;
+        }
+    }
 }

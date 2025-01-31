@@ -31,21 +31,25 @@
 
 using System;
 
-namespace Spine3_1_07 {
-	public class Event {
-		public EventData Data { get; private set; }
-		public int Int { get; set; }
-		public float Float { get; set; }
-		public String String { get; set; }
-		public float Time { get; private set; }
+namespace Spine3_1_07
+{
+    public class Event
+    {
+        public EventData Data { get; private set; }
+        public int Int { get; set; }
+        public float Float { get; set; }
+        public String String { get; set; }
+        public float Time { get; private set; }
 
-		public Event (float time, EventData data) {
-			Time = time;
-			Data = data;
-		}
+        public Event(float time, EventData data)
+        {
+            Time = time;
+            Data = data;
+        }
 
-		override public String ToString () {
-			return Data.Name;
-		}
-	}
+        override public String ToString()
+        {
+            return Data.Name;
+        }
+    }
 }

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SpineViewerWPF.Views
 {
@@ -27,14 +18,14 @@ namespace SpineViewerWPF.Views
         {
             InitializeComponent();
 
-            if(App.appXC == null)
+            if (App.appXC == null)
             {
                 App.appXC = new WpfXnaControl.XnaControl();
             }
 
-           
 
-            if(player != null)
+
+            if (player != null)
             {
                 player.Dispose();
             }
@@ -94,8 +85,8 @@ namespace SpineViewerWPF.Views
 
             var transformGroup = (TransformGroup)Frame.RenderTransform;
             var tt = (TranslateTransform)transformGroup.Children.Where(x => x.GetType() == typeof(TranslateTransform)).FirstOrDefault();
-            tt.X = (float)((App.mainWidth ) / 2 - (App.canvasWidth / 2) -10);
-            tt.Y = (float)((App.mainHeight ) / 2 - (App.canvasHeight / 2)-40);
+            tt.X = (float)((App.mainWidth) / 2 - (App.canvasWidth / 2) - 10);
+            tt.Y = (float)((App.mainHeight) / 2 - (App.canvasHeight / 2) - 40);
 
             Frame.Children.Add(App.appXC);
 
@@ -123,13 +114,13 @@ namespace SpineViewerWPF.Views
                 }
                 else if (Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
-                   
+
                     var transformGroup = (TransformGroup)Frame.RenderTransform;
                     var tt = (TranslateTransform)transformGroup.Children.Where(x => x.GetType() == typeof(TranslateTransform)).FirstOrDefault();
                     tt.X = (float)(position.X + tt.X - App.mouseLocation.X);
                     tt.Y = (float)(position.Y + tt.Y - App.mouseLocation.Y);
                 }
-                    App.mouseLocation = Mouse.GetPosition(this.Frame);
+                App.mouseLocation = Mouse.GetPosition(this.Frame);
             }
         }
 

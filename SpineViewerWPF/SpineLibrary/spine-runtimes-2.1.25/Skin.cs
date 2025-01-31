@@ -31,71 +31,85 @@
 using System;
 using System.Collections.Generic;
 
-namespace Spine2_1_25 {
-	/// <summary>Stores attachments by slot index and attachment name.</summary>
-	public class Skin {
-		internal String name;
-		private Dictionary<KeyValuePair<int, String>, Attachment> attachments =
-			new Dictionary<KeyValuePair<int, String>, Attachment>(AttachmentComparer.Instance);
+namespace Spine2_1_25
+{
+    /// <summary>Stores attachments by slot index and attachment name.</summary>
+    public class Skin
+    {
+        internal String name;
+        private Dictionary<KeyValuePair<int, String>, Attachment> attachments =
+            new Dictionary<KeyValuePair<int, String>, Attachment>(AttachmentComparer.Instance);
 
-		public String Name { get { return name; } }
+        public String Name { get { return name; } }
 
-		public Skin (String name) {
-			if (name == null) throw new ArgumentNullException("name cannot be null.");
-			this.name = name;
-		}
+        public Skin(String name)
+        {
+            if (name == null) throw new ArgumentNullException("name cannot be null.");
+            this.name = name;
+        }
 
-		public void AddAttachment (int slotIndex, String name, Attachment attachment) {
-			if (attachment == null) throw new ArgumentNullException("attachment cannot be null.");
-			attachments[new KeyValuePair<int, String>(slotIndex, name)] = attachment;
-		}
+        public void AddAttachment(int slotIndex, String name, Attachment attachment)
+        {
+            if (attachment == null) throw new ArgumentNullException("attachment cannot be null.");
+            attachments[new KeyValuePair<int, String>(slotIndex, name)] = attachment;
+        }
 
-		/// <returns>May be null.</returns>
-		public Attachment GetAttachment (int slotIndex, String name) {
-			Attachment attachment;
-			attachments.TryGetValue(new KeyValuePair<int, String>(slotIndex, name), out attachment);
-			return attachment;
-		}
+        /// <returns>May be null.</returns>
+        public Attachment GetAttachment(int slotIndex, String name)
+        {
+            Attachment attachment;
+            attachments.TryGetValue(new KeyValuePair<int, String>(slotIndex, name), out attachment);
+            return attachment;
+        }
 
-		public void FindNamesForSlot (int slotIndex, List<String> names) {
-			if (names == null) throw new ArgumentNullException("names cannot be null.");
-			foreach (KeyValuePair<int, String> key in attachments.Keys)
-				if (key.Key == slotIndex) names.Add(key.Value);
-		}
+        public void FindNamesForSlot(int slotIndex, List<String> names)
+        {
+            if (names == null) throw new ArgumentNullException("names cannot be null.");
+            foreach (KeyValuePair<int, String> key in attachments.Keys)
+                if (key.Key == slotIndex) names.Add(key.Value);
+        }
 
-		public void FindAttachmentsForSlot (int slotIndex, List<Attachment> attachments) {
-			if (attachments == null) throw new ArgumentNullException("attachments cannot be null.");
-			foreach (KeyValuePair<KeyValuePair<int, String>, Attachment> entry in this.attachments)
-				if (entry.Key.Key == slotIndex) attachments.Add(entry.Value);
-		}
+        public void FindAttachmentsForSlot(int slotIndex, List<Attachment> attachments)
+        {
+            if (attachments == null) throw new ArgumentNullException("attachments cannot be null.");
+            foreach (KeyValuePair<KeyValuePair<int, String>, Attachment> entry in this.attachments)
+                if (entry.Key.Key == slotIndex) attachments.Add(entry.Value);
+        }
 
-		override public String ToString () {
-			return name;
-		}
+        override public String ToString()
+        {
+            return name;
+        }
 
-		/// <summary>Attach all attachments from this skin if the corresponding attachment from the old skin is currently attached.</summary>
-		internal void AttachAll (Skeleton skeleton, Skin oldSkin) {
-			foreach (KeyValuePair<KeyValuePair<int, String>, Attachment> entry in oldSkin.attachments) {
-				int slotIndex = entry.Key.Key;
-				Slot slot = skeleton.slots[slotIndex];
-				if (slot.attachment == entry.Value) {
-					Attachment attachment = GetAttachment(slotIndex, entry.Key.Value);
-					if (attachment != null) slot.Attachment = attachment;
-				}
-			}
-		}
+        /// <summary>Attach all attachments from this skin if the corresponding attachment from the old skin is currently attached.</summary>
+        internal void AttachAll(Skeleton skeleton, Skin oldSkin)
+        {
+            foreach (KeyValuePair<KeyValuePair<int, String>, Attachment> entry in oldSkin.attachments)
+            {
+                int slotIndex = entry.Key.Key;
+                Slot slot = skeleton.slots[slotIndex];
+                if (slot.attachment == entry.Value)
+                {
+                    Attachment attachment = GetAttachment(slotIndex, entry.Key.Value);
+                    if (attachment != null) slot.Attachment = attachment;
+                }
+            }
+        }
 
-		// Avoids boxing in the dictionary.
-		private class AttachmentComparer : IEqualityComparer<KeyValuePair<int, String>> {
-			internal static readonly AttachmentComparer Instance = new AttachmentComparer();
+        // Avoids boxing in the dictionary.
+        private class AttachmentComparer : IEqualityComparer<KeyValuePair<int, String>>
+        {
+            internal static readonly AttachmentComparer Instance = new AttachmentComparer();
 
-			bool IEqualityComparer<KeyValuePair<int, string>>.Equals (KeyValuePair<int, string> o1, KeyValuePair<int, string> o2) {
-				return o1.Key == o2.Key && o1.Value == o2.Value;
-			}
+            bool IEqualityComparer<KeyValuePair<int, string>>.Equals(KeyValuePair<int, string> o1, KeyValuePair<int, string> o2)
+            {
+                return o1.Key == o2.Key && o1.Value == o2.Value;
+            }
 
-			int IEqualityComparer<KeyValuePair<int, string>>.GetHashCode (KeyValuePair<int, string> o) {
-				return o.Key;
-			}
-		}
-	}
+            int IEqualityComparer<KeyValuePair<int, string>>.GetHashCode(KeyValuePair<int, string> o)
+            {
+                return o.Key;
+            }
+        }
+    }
 }

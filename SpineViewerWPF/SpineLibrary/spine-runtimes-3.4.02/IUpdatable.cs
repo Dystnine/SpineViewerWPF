@@ -28,10 +28,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-using System;
-
-namespace Spine3_4_02 {
-	public interface IUpdatable {
-		void Update ();
-	}
+namespace Spine3_4_02
+{
+    public interface IUpdatable
+    {
+        void Update();
+    }
 }

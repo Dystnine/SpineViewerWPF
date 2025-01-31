@@ -28,8 +28,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-namespace Spine3_4_02 {
-	public enum AttachmentType {
-		Region, Boundingbox, Mesh, Linkedmesh, Path
-	}
+namespace Spine3_4_02
+{
+    public enum AttachmentType
+    {
+        Region, Boundingbox, Mesh, Linkedmesh, Path
+    }
 }

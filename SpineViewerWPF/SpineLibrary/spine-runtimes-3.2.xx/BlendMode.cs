@@ -29,8 +29,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-namespace Spine3_2_xx {
-	public enum BlendMode {
-		normal, additive, multiply, screen
-	}
+namespace Spine3_2_xx
+{
+    public enum BlendMode
+    {
+        normal, additive, multiply, screen
+    }
 }

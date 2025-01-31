@@ -29,8 +29,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-namespace Spine3_1_07 {
-	public interface IFfdAttachment {
-		bool ApplyFFD (Attachment sourceAttachment);
-	}
+namespace Spine3_1_07
+{
+    public interface IFfdAttachment
+    {
+        bool ApplyFFD(Attachment sourceAttachment);
+    }
 }

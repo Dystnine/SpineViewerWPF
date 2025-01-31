@@ -1,25 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using SpineViewerWPF.Views;
 using Microsoft.Win32;
-using WpfXnaControl;
-using System.Text.RegularExpressions;
-using System.IO;
 using Microsoft.Xna.Framework;
+using SpineViewerWPF.Views;
 using SpineViewerWPF.Windows;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace SpineViewerWPF
 {
@@ -41,7 +30,7 @@ namespace SpineViewerWPF
             this.Title = $"SpineViewerWPF      v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
             MasterMain = this;
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0,0,100);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             dispatcherTimer.Start();
             LoadSetting();
 
@@ -400,7 +389,7 @@ namespace SpineViewerWPF
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-           if (App.graphicsDevice != null && App.graphicsDevice.GraphicsDeviceStatus == Microsoft.Xna.Framework.Graphics.GraphicsDeviceStatus.NotReset)
+            if (App.graphicsDevice != null && App.graphicsDevice.GraphicsDeviceStatus == Microsoft.Xna.Framework.Graphics.GraphicsDeviceStatus.NotReset)
             {
                 App.graphicsDevice.Reset();
             }

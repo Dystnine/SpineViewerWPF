@@ -1,10 +1,7 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 
 
 public class GlobalValue : INotifyPropertyChanged
@@ -154,7 +151,7 @@ public class GlobalValue : INotifyPropertyChanged
         {
             if (_ViewScale != value)
             {
-                _ViewScale = (double)Math.Round(value, 2);
+                _ViewScale = Math.Round(value, 2);
                 OnPropertyChanged("ViewScale");
             }
         }
@@ -551,7 +548,7 @@ public class GlobalValue : INotifyPropertyChanged
             {
                 _GifList = value;
             }
-           
+
 
         }
     }

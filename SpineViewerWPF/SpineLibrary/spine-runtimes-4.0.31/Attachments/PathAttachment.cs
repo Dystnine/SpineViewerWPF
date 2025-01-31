@@ -28,33 +28,36 @@
  *****************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Spine4_0_31 {
-	public class PathAttachment : VertexAttachment {
-		internal float[] lengths;
-		internal bool closed, constantSpeed;
+namespace Spine4_0_31
+{
+    public class PathAttachment : VertexAttachment
+    {
+        internal float[] lengths;
+        internal bool closed, constantSpeed;
 
-		/// <summary>The length in the setup pose from the start of the path to the end of each curve.</summary>
-		public float[] Lengths { get { return lengths; } set { lengths = value; } }
-		/// <summary>If true, the start and end knots are connected.</summary>
-		public bool Closed { get { return closed; } set { closed = value; } }
-		/// <summary>If true, additional calculations are performed to make computing positions along the path more accurate and movement along
-		/// the path have a constant speed.</summary>
-		public bool ConstantSpeed { get { return constantSpeed; } set { constantSpeed = value; } }
+        /// <summary>The length in the setup pose from the start of the path to the end of each curve.</summary>
+        public float[] Lengths { get { return lengths; } set { lengths = value; } }
+        /// <summary>If true, the start and end knots are connected.</summary>
+        public bool Closed { get { return closed; } set { closed = value; } }
+        /// <summary>If true, additional calculations are performed to make computing positions along the path more accurate and movement along
+        /// the path have a constant speed.</summary>
+        public bool ConstantSpeed { get { return constantSpeed; } set { constantSpeed = value; } }
 
-		public PathAttachment (String name)
-			: base(name) {
-		}
+        public PathAttachment(String name)
+            : base(name)
+        {
+        }
 
-		public override Attachment Copy () {
-			PathAttachment copy = new PathAttachment(this.Name);
-			CopyTo(copy);
-			copy.lengths = new float[lengths.Length];
-			Array.Copy(lengths, 0, copy.lengths, 0, lengths.Length);
-			copy.closed = closed;
-			copy.constantSpeed = constantSpeed;
-			return copy;
-		}
-	}
+        public override Attachment Copy()
+        {
+            PathAttachment copy = new PathAttachment(this.Name);
+            CopyTo(copy);
+            copy.lengths = new float[lengths.Length];
+            Array.Copy(lengths, 0, copy.lengths, 0, lengths.Length);
+            copy.closed = closed;
+            copy.constantSpeed = constantSpeed;
+            return copy;
+        }
+    }
 }

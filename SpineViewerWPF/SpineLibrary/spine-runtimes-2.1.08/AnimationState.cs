@@ -32,268 +32,307 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Spine2_1_08 {
-	public class AnimationState {
-		private AnimationStateData data;
-		private List<TrackEntry> tracks = new List<TrackEntry>();
-		private List<Event> events = new List<Event>();
-		private float timeScale = 1;
+namespace Spine2_1_08
+{
+    public class AnimationState
+    {
+        private AnimationStateData data;
+        private List<TrackEntry> tracks = new List<TrackEntry>();
+        private List<Event> events = new List<Event>();
+        private float timeScale = 1;
 
-		public AnimationStateData Data { get { return data; } }
-		public float TimeScale { get { return timeScale; } set { timeScale = value; } }
+        public AnimationStateData Data { get { return data; } }
+        public float TimeScale { get { return timeScale; } set { timeScale = value; } }
 
-		public delegate void StartEndDelegate(AnimationState state, int trackIndex);
-		public event StartEndDelegate Start;
-		public event StartEndDelegate End;
+        public delegate void StartEndDelegate(AnimationState state, int trackIndex);
+        public event StartEndDelegate Start;
+        public event StartEndDelegate End;
 
-		public delegate void EventDelegate(AnimationState state, int trackIndex, Event e);
-		public event EventDelegate Event;
-		
-		public delegate void CompleteDelegate(AnimationState state, int trackIndex, int loopCount);
-		public event CompleteDelegate Complete;
+        public delegate void EventDelegate(AnimationState state, int trackIndex, Event e);
+        public event EventDelegate Event;
 
-		public AnimationState (AnimationStateData data) {
-			if (data == null) throw new ArgumentNullException("data cannot be null.");
-			this.data = data;
-		}
+        public delegate void CompleteDelegate(AnimationState state, int trackIndex, int loopCount);
+        public event CompleteDelegate Complete;
 
-		public void Update (float delta) {
-			delta *= timeScale;
-			for (int i = 0; i < tracks.Count; i++) {
-				TrackEntry current = tracks[i];
-				if (current == null) continue;
+        public AnimationState(AnimationStateData data)
+        {
+            if (data == null) throw new ArgumentNullException("data cannot be null.");
+            this.data = data;
+        }
 
-				float trackDelta = delta * current.timeScale;
-				float time = current.time + trackDelta;
-				float endTime = current.endTime;
+        public void Update(float delta)
+        {
+            delta *= timeScale;
+            for (int i = 0; i < tracks.Count; i++)
+            {
+                TrackEntry current = tracks[i];
+                if (current == null) continue;
 
-				current.time = time;
-				if (current.previous != null) {
-					current.previous.time += trackDelta;
-					current.mixTime += trackDelta;
-				}
+                float trackDelta = delta * current.timeScale;
+                float time = current.time + trackDelta;
+                float endTime = current.endTime;
 
-				// Check if completed the animation or a loop iteration.
-				if (current.loop ? (current.lastTime % endTime > time % endTime) : (current.lastTime < endTime && time >= endTime)) {
-					int count = (int)(time / endTime);
-					current.OnComplete(this, i, count);
-					if (Complete != null) Complete(this, i, count);
-				}
+                current.time = time;
+                if (current.previous != null)
+                {
+                    current.previous.time += trackDelta;
+                    current.mixTime += trackDelta;
+                }
 
-				TrackEntry next = current.next;
-				if (next != null) {
-					next.time = current.lastTime - next.delay;
-					if (next.time >= 0) SetCurrent(i, next);
-				} else {
-					// End non-looping animation when it reaches its end time and there is no next entry.
-					if (!current.loop && current.lastTime >= current.endTime) ClearTrack(i);
-				}
-			}
-		}
+                // Check if completed the animation or a loop iteration.
+                if (current.loop ? (current.lastTime % endTime > time % endTime) : (current.lastTime < endTime && time >= endTime))
+                {
+                    int count = (int)(time / endTime);
+                    current.OnComplete(this, i, count);
+                    if (Complete != null) Complete(this, i, count);
+                }
 
-		public void Apply (Skeleton skeleton) {
-			List<Event> events = this.events;
+                TrackEntry next = current.next;
+                if (next != null)
+                {
+                    next.time = current.lastTime - next.delay;
+                    if (next.time >= 0) SetCurrent(i, next);
+                }
+                else
+                {
+                    // End non-looping animation when it reaches its end time and there is no next entry.
+                    if (!current.loop && current.lastTime >= current.endTime) ClearTrack(i);
+                }
+            }
+        }
 
-			for (int i = 0; i < tracks.Count; i++) {
-				TrackEntry current = tracks[i];
-				if (current == null) continue;
+        public void Apply(Skeleton skeleton)
+        {
+            List<Event> events = this.events;
 
-				events.Clear();
+            for (int i = 0; i < tracks.Count; i++)
+            {
+                TrackEntry current = tracks[i];
+                if (current == null) continue;
 
-				float time = current.time;
-				bool loop = current.loop;
-				if (!loop && time > current.endTime) time = current.endTime;
+                events.Clear();
 
-				TrackEntry previous = current.previous;
-				if (previous == null) {
-					if (current.mix == 1)
-						current.animation.Apply(skeleton, current.lastTime, time, loop, events);
-					else
-						current.animation.Mix(skeleton, current.lastTime, time, loop, events, current.mix);
-				} else {
-					float previousTime = previous.time;
-					if (!previous.loop && previousTime > previous.endTime) previousTime = previous.endTime;
-					previous.animation.Apply(skeleton, previousTime, previousTime, previous.loop, null);
+                float time = current.time;
+                bool loop = current.loop;
+                if (!loop && time > current.endTime) time = current.endTime;
 
-					float alpha = current.mixTime / current.mixDuration * current.mix;
-					if (alpha >= 1) {
-						alpha = 1;
-						current.previous = null;
-					}
-					current.animation.Mix(skeleton, current.lastTime, time, loop, events, alpha);
-				}
+                TrackEntry previous = current.previous;
+                if (previous == null)
+                {
+                    if (current.mix == 1)
+                        current.animation.Apply(skeleton, current.lastTime, time, loop, events);
+                    else
+                        current.animation.Mix(skeleton, current.lastTime, time, loop, events, current.mix);
+                }
+                else
+                {
+                    float previousTime = previous.time;
+                    if (!previous.loop && previousTime > previous.endTime) previousTime = previous.endTime;
+                    previous.animation.Apply(skeleton, previousTime, previousTime, previous.loop, null);
 
-				for (int ii = 0, nn = events.Count; ii < nn; ii++) {
-					Event e = events[ii];
-					current.OnEvent(this, i, e);
-					if (Event != null) Event(this, i, e);
-				}
+                    float alpha = current.mixTime / current.mixDuration * current.mix;
+                    if (alpha >= 1)
+                    {
+                        alpha = 1;
+                        current.previous = null;
+                    }
+                    current.animation.Mix(skeleton, current.lastTime, time, loop, events, alpha);
+                }
 
-				current.lastTime = current.time;
-			}
-		}
+                for (int ii = 0, nn = events.Count; ii < nn; ii++)
+                {
+                    Event e = events[ii];
+                    current.OnEvent(this, i, e);
+                    if (Event != null) Event(this, i, e);
+                }
 
-		public void ClearTracks () {
-			for (int i = 0, n = tracks.Count; i < n; i++)
-				ClearTrack(i);
-			tracks.Clear();
-		}
+                current.lastTime = current.time;
+            }
+        }
 
-		public void ClearTrack (int trackIndex) {
-			if (trackIndex >= tracks.Count) return;
-			TrackEntry current = tracks[trackIndex];
-			if (current == null) return;
+        public void ClearTracks()
+        {
+            for (int i = 0, n = tracks.Count; i < n; i++)
+                ClearTrack(i);
+            tracks.Clear();
+        }
 
-			current.OnEnd(this, trackIndex);
-			if (End != null) End(this, trackIndex);
+        public void ClearTrack(int trackIndex)
+        {
+            if (trackIndex >= tracks.Count) return;
+            TrackEntry current = tracks[trackIndex];
+            if (current == null) return;
 
-			tracks[trackIndex] = null;
-		}
+            current.OnEnd(this, trackIndex);
+            if (End != null) End(this, trackIndex);
 
-		private TrackEntry ExpandToIndex (int index) {
-			if (index < tracks.Count) return tracks[index];
-			while (index >= tracks.Count)
-				tracks.Add(null);
-			return null;
-		}
+            tracks[trackIndex] = null;
+        }
 
-		private void SetCurrent (int index, TrackEntry entry) {
-			TrackEntry current = ExpandToIndex(index);
-			if (current != null) {
-				TrackEntry previous = current.previous;
-				current.previous = null;
+        private TrackEntry ExpandToIndex(int index)
+        {
+            if (index < tracks.Count) return tracks[index];
+            while (index >= tracks.Count)
+                tracks.Add(null);
+            return null;
+        }
 
-				current.OnEnd(this, index);
-				if (End != null) End(this, index);
+        private void SetCurrent(int index, TrackEntry entry)
+        {
+            TrackEntry current = ExpandToIndex(index);
+            if (current != null)
+            {
+                TrackEntry previous = current.previous;
+                current.previous = null;
 
-				entry.mixDuration = data.GetMix(current.animation, entry.animation);
-				if (entry.mixDuration > 0) {
-					entry.mixTime = 0;
-					// If a mix is in progress, mix from the closest animation.
-					if (previous != null && current.mixTime / current.mixDuration < 0.5f)
-						entry.previous = previous;
-					else
-						entry.previous = current;
-				}
-			}
+                current.OnEnd(this, index);
+                if (End != null) End(this, index);
 
-			tracks[index] = entry;
+                entry.mixDuration = data.GetMix(current.animation, entry.animation);
+                if (entry.mixDuration > 0)
+                {
+                    entry.mixTime = 0;
+                    // If a mix is in progress, mix from the closest animation.
+                    if (previous != null && current.mixTime / current.mixDuration < 0.5f)
+                        entry.previous = previous;
+                    else
+                        entry.previous = current;
+                }
+            }
 
-			entry.OnStart(this, index);
-			if (Start != null) Start(this, index);
-		}
+            tracks[index] = entry;
 
-		public TrackEntry SetAnimation (int trackIndex, String animationName, bool loop) {
-			Animation animation = data.skeletonData.FindAnimation(animationName);
-			if (animation == null) throw new ArgumentException("Animation not found: " + animationName);
-			return SetAnimation(trackIndex, animation, loop);
-		}
+            entry.OnStart(this, index);
+            if (Start != null) Start(this, index);
+        }
 
-		/// <summary>Set the current animation. Any queued animations are cleared.</summary>
-		public TrackEntry SetAnimation (int trackIndex, Animation animation, bool loop) {
-			if (animation == null) throw new ArgumentException("animation cannot be null.");
-			TrackEntry entry = new TrackEntry();
-			entry.animation = animation;
-			entry.loop = loop;
-			entry.time = 0;
-			entry.endTime = animation.Duration;
-			SetCurrent(trackIndex, entry);
-			return entry;
-		}
+        public TrackEntry SetAnimation(int trackIndex, String animationName, bool loop)
+        {
+            Animation animation = data.skeletonData.FindAnimation(animationName);
+            if (animation == null) throw new ArgumentException("Animation not found: " + animationName);
+            return SetAnimation(trackIndex, animation, loop);
+        }
 
-		public TrackEntry AddAnimation (int trackIndex, String animationName, bool loop, float delay) {
-			Animation animation = data.skeletonData.FindAnimation(animationName);
-			if (animation == null) throw new ArgumentException("Animation not found: " + animationName);
-			return AddAnimation(trackIndex, animation, loop, delay);
-		}
+        /// <summary>Set the current animation. Any queued animations are cleared.</summary>
+        public TrackEntry SetAnimation(int trackIndex, Animation animation, bool loop)
+        {
+            if (animation == null) throw new ArgumentException("animation cannot be null.");
+            TrackEntry entry = new TrackEntry();
+            entry.animation = animation;
+            entry.loop = loop;
+            entry.time = 0;
+            entry.endTime = animation.Duration;
+            SetCurrent(trackIndex, entry);
+            return entry;
+        }
 
-		/// <summary>Adds an animation to be played delay seconds after the current or last queued animation.</summary>
-		/// <param name="delay">May be <= 0 to use duration of previous animation minus any mix duration plus the negative delay.</param>
-		public TrackEntry AddAnimation (int trackIndex, Animation animation, bool loop, float delay) {
-			if (animation == null) throw new ArgumentException("animation cannot be null.");
-			TrackEntry entry = new TrackEntry();
-			entry.animation = animation;
-			entry.loop = loop;
-			entry.time = 0;
-			entry.endTime = animation.Duration;
+        public TrackEntry AddAnimation(int trackIndex, String animationName, bool loop, float delay)
+        {
+            Animation animation = data.skeletonData.FindAnimation(animationName);
+            if (animation == null) throw new ArgumentException("Animation not found: " + animationName);
+            return AddAnimation(trackIndex, animation, loop, delay);
+        }
 
-			TrackEntry last = ExpandToIndex(trackIndex);
-			if (last != null) {
-				while (last.next != null)
-					last = last.next;
-				last.next = entry;
-			} else
-				tracks[trackIndex] = entry;
+        /// <summary>Adds an animation to be played delay seconds after the current or last queued animation.</summary>
+        /// <param name="delay">May be <= 0 to use duration of previous animation minus any mix duration plus the negative delay.</param>
+        public TrackEntry AddAnimation(int trackIndex, Animation animation, bool loop, float delay)
+        {
+            if (animation == null) throw new ArgumentException("animation cannot be null.");
+            TrackEntry entry = new TrackEntry();
+            entry.animation = animation;
+            entry.loop = loop;
+            entry.time = 0;
+            entry.endTime = animation.Duration;
 
-			if (delay <= 0) {
-				if (last != null)
-					delay += last.endTime - data.GetMix(last.animation, animation);
-				else
-					delay = 0;
-			}
-			entry.delay = delay;
+            TrackEntry last = ExpandToIndex(trackIndex);
+            if (last != null)
+            {
+                while (last.next != null)
+                    last = last.next;
+                last.next = entry;
+            }
+            else
+                tracks[trackIndex] = entry;
 
-			return entry;
-		}
+            if (delay <= 0)
+            {
+                if (last != null)
+                    delay += last.endTime - data.GetMix(last.animation, animation);
+                else
+                    delay = 0;
+            }
+            entry.delay = delay;
 
-		/// <returns>May be null.</returns>
-		public TrackEntry GetCurrent (int trackIndex) {
-			if (trackIndex >= tracks.Count) return null;
-			return tracks[trackIndex];
-		}
+            return entry;
+        }
 
-		override public String ToString () {
-			StringBuilder buffer = new StringBuilder();
-			for (int i = 0, n = tracks.Count; i < n; i++) {
-				TrackEntry entry = tracks[i];
-				if (entry == null) continue;
-				if (buffer.Length > 0) buffer.Append(", ");
-				buffer.Append(entry.ToString());
-			}
-			if (buffer.Length == 0) return "<none>";
-			return buffer.ToString();
-		}
-	}
+        /// <returns>May be null.</returns>
+        public TrackEntry GetCurrent(int trackIndex)
+        {
+            if (trackIndex >= tracks.Count) return null;
+            return tracks[trackIndex];
+        }
 
-	public class TrackEntry {
-		internal TrackEntry next, previous;
-		internal Animation animation;
-		internal bool loop;
-		internal float delay, time, lastTime = -1, endTime, timeScale = 1;
-		internal float mixTime, mixDuration, mix = 1;
+        override public String ToString()
+        {
+            StringBuilder buffer = new StringBuilder();
+            for (int i = 0, n = tracks.Count; i < n; i++)
+            {
+                TrackEntry entry = tracks[i];
+                if (entry == null) continue;
+                if (buffer.Length > 0) buffer.Append(", ");
+                buffer.Append(entry.ToString());
+            }
+            if (buffer.Length == 0) return "<none>";
+            return buffer.ToString();
+        }
+    }
 
-		public Animation Animation { get { return animation; } }
-		public float Delay { get { return delay; } set { delay = value; } }
-		public float Time { get { return time; } set { time = value; } }
-		public float LastTime { get { return lastTime; } set { lastTime = value; } }
-		public float EndTime { get { return endTime; } set { endTime = value; } }
-		public float TimeScale { get { return timeScale; } set { timeScale = value; } }
-		public float Mix { get { return mix; } set { mix = value; } }
-		public bool Loop { get { return loop; } set { loop = value; } }
+    public class TrackEntry
+    {
+        internal TrackEntry next, previous;
+        internal Animation animation;
+        internal bool loop;
+        internal float delay, time, lastTime = -1, endTime, timeScale = 1;
+        internal float mixTime, mixDuration, mix = 1;
 
-		public event AnimationState.StartEndDelegate Start;
-		public event AnimationState.StartEndDelegate End;
-		public event AnimationState.EventDelegate Event;
-		public event AnimationState.CompleteDelegate Complete;
+        public Animation Animation { get { return animation; } }
+        public float Delay { get { return delay; } set { delay = value; } }
+        public float Time { get { return time; } set { time = value; } }
+        public float LastTime { get { return lastTime; } set { lastTime = value; } }
+        public float EndTime { get { return endTime; } set { endTime = value; } }
+        public float TimeScale { get { return timeScale; } set { timeScale = value; } }
+        public float Mix { get { return mix; } set { mix = value; } }
+        public bool Loop { get { return loop; } set { loop = value; } }
 
-		internal void OnStart (AnimationState state, int index) {
-			if (Start != null) Start(state, index);
-		}
+        public event AnimationState.StartEndDelegate Start;
+        public event AnimationState.StartEndDelegate End;
+        public event AnimationState.EventDelegate Event;
+        public event AnimationState.CompleteDelegate Complete;
 
-		internal void OnEnd (AnimationState state, int index) {
-			if (End != null) End(state, index);
-		}
+        internal void OnStart(AnimationState state, int index)
+        {
+            if (Start != null) Start(state, index);
+        }
 
-		internal void OnEvent (AnimationState state, int index, Event e) {
-			if (Event != null) Event(state, index, e);
-		}
+        internal void OnEnd(AnimationState state, int index)
+        {
+            if (End != null) End(state, index);
+        }
 
-		internal void OnComplete (AnimationState state, int index, int loopCount) {
-			if (Complete != null) Complete(state, index, loopCount);
-		}
+        internal void OnEvent(AnimationState state, int index, Event e)
+        {
+            if (Event != null) Event(state, index, e);
+        }
 
-		override public String ToString () {
-			return animation == null ? "<none>" : animation.name;
-		}
-	}
+        internal void OnComplete(AnimationState state, int index, int loopCount)
+        {
+            if (Complete != null) Complete(state, index, loopCount);
+        }
+
+        override public String ToString()
+        {
+            return animation == null ? "<none>" : animation.name;
+        }
+    }
 }

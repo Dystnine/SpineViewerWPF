@@ -30,33 +30,37 @@
 
 using System;
 
-namespace Spine2_1_08 {
-	public class SlotData {
-		internal String name;
-		internal BoneData boneData;
-		internal float r = 1, g = 1, b = 1, a = 1;
-		internal String attachmentName;
-		internal bool additiveBlending;
+namespace Spine2_1_08
+{
+    public class SlotData
+    {
+        internal String name;
+        internal BoneData boneData;
+        internal float r = 1, g = 1, b = 1, a = 1;
+        internal String attachmentName;
+        internal bool additiveBlending;
 
-		public String Name { get { return name; } }
-		public BoneData BoneData { get { return boneData; } }
-		public float R { get { return r; } set { r = value; } }
-		public float G { get { return g; } set { g = value; } }
-		public float B { get { return b; } set { b = value; } }
-		public float A { get { return a; } set { a = value; } }
-		/// <summary>May be null.</summary>
-		public String AttachmentName { get { return attachmentName; } set { attachmentName = value; } }
-		public bool AdditiveBlending { get { return additiveBlending; } set { additiveBlending = value; } }
+        public String Name { get { return name; } }
+        public BoneData BoneData { get { return boneData; } }
+        public float R { get { return r; } set { r = value; } }
+        public float G { get { return g; } set { g = value; } }
+        public float B { get { return b; } set { b = value; } }
+        public float A { get { return a; } set { a = value; } }
+        /// <summary>May be null.</summary>
+        public String AttachmentName { get { return attachmentName; } set { attachmentName = value; } }
+        public bool AdditiveBlending { get { return additiveBlending; } set { additiveBlending = value; } }
 
-		public SlotData (String name, BoneData boneData) {
-			if (name == null) throw new ArgumentNullException("name cannot be null.");
-			if (boneData == null) throw new ArgumentNullException("boneData cannot be null.");
-			this.name = name;
-			this.boneData = boneData;
-		}
+        public SlotData(String name, BoneData boneData)
+        {
+            if (name == null) throw new ArgumentNullException("name cannot be null.");
+            if (boneData == null) throw new ArgumentNullException("boneData cannot be null.");
+            this.name = name;
+            this.boneData = boneData;
+        }
 
-		override public String ToString () {
-			return name;
-		}
-	}
+        override public String ToString()
+        {
+            return name;
+        }
+    }
 }

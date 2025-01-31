@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Spine3_2_xx;
-using SpineViewerWPF;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using Spine3_2_xx;
+using SpineViewerWPF;
 
 public class Player_3_2_xx : IPlayer
 {
@@ -116,7 +112,7 @@ public class Player_3_2_xx : IPlayer
         App.graphicsDevice.Clear(Color.Transparent);
 
         Player.DrawBG(ref App.spriteBatch);
-        App.globalValues.TimeScale = (float)App.globalValues.Speed / 30f;
+        App.globalValues.TimeScale = App.globalValues.Speed / 30f;
 
         state.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000f);
 
@@ -164,7 +160,7 @@ public class Player_3_2_xx : IPlayer
         if (state != null)
         {
             TrackEntry entry = state.GetCurrent(0);
-            float speed = (float)App.globalValues.Speed / 30f;
+            float speed = App.globalValues.Speed / 30f;
             if (entry != null)
             {
 
@@ -201,7 +197,7 @@ public class Player_3_2_xx : IPlayer
                     App.globalValues.Lock = (entry.LastTime % entry.EndTime) / entry.EndTime;
                     entry.TimeScale = App.globalValues.TimeScale;
                 }
-                App.globalValues.LoadingProcess = $"{ Math.Round((entry.Time % entry.EndTime) / entry.EndTime * 100, 2)}%";
+                App.globalValues.LoadingProcess = $"{Math.Round((entry.Time % entry.EndTime) / entry.EndTime * 100, 2)}%";
             }
         }
 

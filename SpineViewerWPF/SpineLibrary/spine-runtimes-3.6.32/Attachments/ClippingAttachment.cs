@@ -28,15 +28,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-using System;
-
-namespace Spine3_6_32 {
-    public class ClippingAttachment : VertexAttachment {
+namespace Spine3_6_32
+{
+    public class ClippingAttachment : VertexAttachment
+    {
         internal SlotData endSlot;
 
         public SlotData EndSlot { get { return endSlot; } set { endSlot = value; } }
 
-        public ClippingAttachment(string name) : base(name) {
+        public ClippingAttachment(string name) : base(name)
+        {
         }
     }
 }

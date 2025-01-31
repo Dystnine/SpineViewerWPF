@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 public static class BlendXna
 {
@@ -32,7 +27,7 @@ public static class BlendXna
     public const int GL_DST_COLOR = 0x0306;
     public const int GL_ONE_MINUS_DST_COLOR = 0x0307;
     public const int GL_SRC_ALPHA_SATURATE = 0x0308;
-    
+
 
     public static Blend GetXNABlend(int glBlend)
     {

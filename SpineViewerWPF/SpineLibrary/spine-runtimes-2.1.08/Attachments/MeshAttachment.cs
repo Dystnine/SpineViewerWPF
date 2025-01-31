@@ -30,79 +30,90 @@
 
 using System;
 
-namespace Spine2_1_08 {
-	/// <summary>Attachment that displays a texture region.</summary>
-	public class MeshAttachment : Attachment {
-		internal float[] vertices, uvs, regionUVs;
-		internal int[] triangles;
-		internal float regionOffsetX, regionOffsetY, regionWidth, regionHeight, regionOriginalWidth, regionOriginalHeight;
-		internal float r = 1, g = 1, b = 1, a = 1;
+namespace Spine2_1_08
+{
+    /// <summary>Attachment that displays a texture region.</summary>
+    public class MeshAttachment : Attachment
+    {
+        internal float[] vertices, uvs, regionUVs;
+        internal int[] triangles;
+        internal float regionOffsetX, regionOffsetY, regionWidth, regionHeight, regionOriginalWidth, regionOriginalHeight;
+        internal float r = 1, g = 1, b = 1, a = 1;
 
-		public int HullLength { get; set; }
-		public float[] Vertices { get { return vertices; } set { vertices = value; } }
-		public float[] RegionUVs { get { return regionUVs; } set { regionUVs = value; } }
-		public float[] UVs { get { return uvs; } set { uvs = value; } }
-		public int[] Triangles { get { return triangles; } set { triangles = value; } }
+        public int HullLength { get; set; }
+        public float[] Vertices { get { return vertices; } set { vertices = value; } }
+        public float[] RegionUVs { get { return regionUVs; } set { regionUVs = value; } }
+        public float[] UVs { get { return uvs; } set { uvs = value; } }
+        public int[] Triangles { get { return triangles; } set { triangles = value; } }
 
-		public float R { get { return r; } set { r = value; } }
-		public float G { get { return g; } set { g = value; } }
-		public float B { get { return b; } set { b = value; } }
-		public float A { get { return a; } set { a = value; } }
+        public float R { get { return r; } set { r = value; } }
+        public float G { get { return g; } set { g = value; } }
+        public float B { get { return b; } set { b = value; } }
+        public float A { get { return a; } set { a = value; } }
 
-		public String Path { get; set; }
-		public Object RendererObject { get; set; }
-		public float RegionU { get; set; }
-		public float RegionV { get; set; }
-		public float RegionU2 { get; set; }
-		public float RegionV2 { get; set; }
-		public bool RegionRotate { get; set; }
-		public float RegionOffsetX { get { return regionOffsetX; } set { regionOffsetX = value; } }
-		public float RegionOffsetY { get { return regionOffsetY; } set { regionOffsetY = value; } } // Pixels stripped from the bottom left, unrotated.
-		public float RegionWidth { get { return regionWidth; } set { regionWidth = value; } }
-		public float RegionHeight { get { return regionHeight; } set { regionHeight = value; } } // Unrotated, stripped size.
-		public float RegionOriginalWidth { get { return regionOriginalWidth; } set { regionOriginalWidth = value; } }
-		public float RegionOriginalHeight { get { return regionOriginalHeight; } set { regionOriginalHeight = value; } } // Unrotated, unstripped size.
+        public String Path { get; set; }
+        public Object RendererObject { get; set; }
+        public float RegionU { get; set; }
+        public float RegionV { get; set; }
+        public float RegionU2 { get; set; }
+        public float RegionV2 { get; set; }
+        public bool RegionRotate { get; set; }
+        public float RegionOffsetX { get { return regionOffsetX; } set { regionOffsetX = value; } }
+        public float RegionOffsetY { get { return regionOffsetY; } set { regionOffsetY = value; } } // Pixels stripped from the bottom left, unrotated.
+        public float RegionWidth { get { return regionWidth; } set { regionWidth = value; } }
+        public float RegionHeight { get { return regionHeight; } set { regionHeight = value; } } // Unrotated, stripped size.
+        public float RegionOriginalWidth { get { return regionOriginalWidth; } set { regionOriginalWidth = value; } }
+        public float RegionOriginalHeight { get { return regionOriginalHeight; } set { regionOriginalHeight = value; } } // Unrotated, unstripped size.
 
-		// Nonessential.
-		public int[] Edges { get; set; }
-		public float Width { get; set; }
-		public float Height { get; set; }
+        // Nonessential.
+        public int[] Edges { get; set; }
+        public float Width { get; set; }
+        public float Height { get; set; }
 
-		public MeshAttachment (string name)
-			: base(name) {
-		}
+        public MeshAttachment(string name)
+            : base(name)
+        {
+        }
 
-		public void UpdateUVs () {
-			float u = RegionU, v = RegionV, width = RegionU2 - RegionU, height = RegionV2 - RegionV;
-			float[] regionUVs = this.regionUVs;
-			if (this.uvs == null || this.uvs.Length != regionUVs.Length) this.uvs = new float[regionUVs.Length];
-			float[] uvs = this.uvs;
-			if (RegionRotate) {
-				for (int i = 0, n = uvs.Length; i < n; i += 2) {
-					uvs[i] = u + regionUVs[i + 1] * width;
-					uvs[i + 1] = v + height - regionUVs[i] * height;
-				}
-			} else {
-				for (int i = 0, n = uvs.Length; i < n; i += 2) {
-					uvs[i] = u + regionUVs[i] * width;
-					uvs[i + 1] = v + regionUVs[i + 1] * height;
-				}
-			}
-		}
+        public void UpdateUVs()
+        {
+            float u = RegionU, v = RegionV, width = RegionU2 - RegionU, height = RegionV2 - RegionV;
+            float[] regionUVs = this.regionUVs;
+            if (this.uvs == null || this.uvs.Length != regionUVs.Length) this.uvs = new float[regionUVs.Length];
+            float[] uvs = this.uvs;
+            if (RegionRotate)
+            {
+                for (int i = 0, n = uvs.Length; i < n; i += 2)
+                {
+                    uvs[i] = u + regionUVs[i + 1] * width;
+                    uvs[i + 1] = v + height - regionUVs[i] * height;
+                }
+            }
+            else
+            {
+                for (int i = 0, n = uvs.Length; i < n; i += 2)
+                {
+                    uvs[i] = u + regionUVs[i] * width;
+                    uvs[i + 1] = v + regionUVs[i + 1] * height;
+                }
+            }
+        }
 
-		public void ComputeWorldVertices (Slot slot, float[] worldVertices) {
-			Bone bone = slot.bone;
-			float x = bone.skeleton.x + bone.worldX, y = bone.skeleton.y + bone.worldY;
-			float m00 = bone.m00, m01 = bone.m01, m10 = bone.m10, m11 = bone.m11;
-			float[] vertices = this.vertices;
-			int verticesCount = vertices.Length;
-			if (slot.attachmentVerticesCount == verticesCount) vertices = slot.AttachmentVertices;
-			for (int i = 0; i < verticesCount; i += 2) {
-				float vx = vertices[i];
-				float vy = vertices[i + 1];
-				worldVertices[i] = vx * m00 + vy * m01 + x;
-				worldVertices[i + 1] = vx * m10 + vy * m11 + y;
-			}
-		}
-	}
+        public void ComputeWorldVertices(Slot slot, float[] worldVertices)
+        {
+            Bone bone = slot.bone;
+            float x = bone.skeleton.x + bone.worldX, y = bone.skeleton.y + bone.worldY;
+            float m00 = bone.m00, m01 = bone.m01, m10 = bone.m10, m11 = bone.m11;
+            float[] vertices = this.vertices;
+            int verticesCount = vertices.Length;
+            if (slot.attachmentVerticesCount == verticesCount) vertices = slot.AttachmentVertices;
+            for (int i = 0; i < verticesCount; i += 2)
+            {
+                float vx = vertices[i];
+                float vy = vertices[i + 1];
+                worldVertices[i] = vx * m00 + vy * m01 + x;
+                worldVertices[i + 1] = vx * m10 + vy * m11 + y;
+            }
+        }
+    }
 }

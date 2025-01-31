@@ -31,128 +31,143 @@
 using System;
 using System.Collections.Generic;
 
-namespace Spine2_1_08 {
-	public class SkeletonData {
-		internal String name;
-		internal List<BoneData> bones = new List<BoneData>();
-		internal List<SlotData> slots = new List<SlotData>();
-		internal List<Skin> skins = new List<Skin>();
-		internal Skin defaultSkin;
-		internal List<EventData> events = new List<EventData>();
-		internal List<Animation> animations = new List<Animation>();
-		internal List<IkConstraintData> ikConstraints = new List<IkConstraintData>();
-		internal float width, height;
-		internal String version, hash;
+namespace Spine2_1_08
+{
+    public class SkeletonData
+    {
+        internal String name;
+        internal List<BoneData> bones = new List<BoneData>();
+        internal List<SlotData> slots = new List<SlotData>();
+        internal List<Skin> skins = new List<Skin>();
+        internal Skin defaultSkin;
+        internal List<EventData> events = new List<EventData>();
+        internal List<Animation> animations = new List<Animation>();
+        internal List<IkConstraintData> ikConstraints = new List<IkConstraintData>();
+        internal float width, height;
+        internal String version, hash;
 
-		public String Name { get { return name; } set { name = value; } }
-		public List<BoneData> Bones { get { return bones; } } // Ordered parents first.
-		public List<SlotData> Slots { get { return slots; } } // Setup pose draw order.
-		public List<Skin> Skins { get { return skins; } set { skins = value; } }
-		/// <summary>May be null.</summary>
-		public Skin DefaultSkin { get { return defaultSkin; } set { defaultSkin = value; } }
-		public List<EventData> Events { get { return events; } set { events = value; } }
-		public List<Animation> Animations { get { return animations; } set { animations = value; } }
-		public List<IkConstraintData> IkConstraints { get { return ikConstraints; } set { ikConstraints = value; } }
-		public float Width { get { return width; } set { width = value; } }
-		public float Height { get { return height; } set { height = value; } }
-		/// <summary>The Spine version used to export this data.</summary>
-		public String Version { get { return version; } set { version = value; } }
-		public String Hash { get { return hash; } set { hash = value; } }
+        public String Name { get { return name; } set { name = value; } }
+        public List<BoneData> Bones { get { return bones; } } // Ordered parents first.
+        public List<SlotData> Slots { get { return slots; } } // Setup pose draw order.
+        public List<Skin> Skins { get { return skins; } set { skins = value; } }
+        /// <summary>May be null.</summary>
+        public Skin DefaultSkin { get { return defaultSkin; } set { defaultSkin = value; } }
+        public List<EventData> Events { get { return events; } set { events = value; } }
+        public List<Animation> Animations { get { return animations; } set { animations = value; } }
+        public List<IkConstraintData> IkConstraints { get { return ikConstraints; } set { ikConstraints = value; } }
+        public float Width { get { return width; } set { width = value; } }
+        public float Height { get { return height; } set { height = value; } }
+        /// <summary>The Spine version used to export this data.</summary>
+        public String Version { get { return version; } set { version = value; } }
+        public String Hash { get { return hash; } set { hash = value; } }
 
-		// --- Bones.
+        // --- Bones.
 
-		/// <returns>May be null.</returns>
-		public BoneData FindBone (String boneName) {
-			if (boneName == null) throw new ArgumentNullException("boneName cannot be null.");
-			List<BoneData> bones = this.bones;
-			for (int i = 0, n = bones.Count; i < n; i++) {
-				BoneData bone = bones[i];
-				if (bone.name == boneName) return bone;
-			}
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public BoneData FindBone(String boneName)
+        {
+            if (boneName == null) throw new ArgumentNullException("boneName cannot be null.");
+            List<BoneData> bones = this.bones;
+            for (int i = 0, n = bones.Count; i < n; i++)
+            {
+                BoneData bone = bones[i];
+                if (bone.name == boneName) return bone;
+            }
+            return null;
+        }
 
-		/// <returns>-1 if the bone was not found.</returns>
-		public int FindBoneIndex (String boneName) {
-			if (boneName == null) throw new ArgumentNullException("boneName cannot be null.");
-			List<BoneData> bones = this.bones;
-			for (int i = 0, n = bones.Count; i < n; i++)
-				if (bones[i].name == boneName) return i;
-			return -1;
-		}
+        /// <returns>-1 if the bone was not found.</returns>
+        public int FindBoneIndex(String boneName)
+        {
+            if (boneName == null) throw new ArgumentNullException("boneName cannot be null.");
+            List<BoneData> bones = this.bones;
+            for (int i = 0, n = bones.Count; i < n; i++)
+                if (bones[i].name == boneName) return i;
+            return -1;
+        }
 
-		// --- Slots.
+        // --- Slots.
 
-		/// <returns>May be null.</returns>
-		public SlotData FindSlot (String slotName) {
-			if (slotName == null) throw new ArgumentNullException("slotName cannot be null.");
-			List<SlotData> slots = this.slots;
-			for (int i = 0, n = slots.Count; i < n; i++) {
-				SlotData slot = slots[i];
-				if (slot.name == slotName) return slot;
-			}
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public SlotData FindSlot(String slotName)
+        {
+            if (slotName == null) throw new ArgumentNullException("slotName cannot be null.");
+            List<SlotData> slots = this.slots;
+            for (int i = 0, n = slots.Count; i < n; i++)
+            {
+                SlotData slot = slots[i];
+                if (slot.name == slotName) return slot;
+            }
+            return null;
+        }
 
-		/// <returns>-1 if the bone was not found.</returns>
-		public int FindSlotIndex (String slotName) {
-			if (slotName == null) throw new ArgumentNullException("slotName cannot be null.");
-			List<SlotData> slots = this.slots;
-			for (int i = 0, n = slots.Count; i < n; i++)
-				if (slots[i].name == slotName) return i;
-			return -1;
-		}
+        /// <returns>-1 if the bone was not found.</returns>
+        public int FindSlotIndex(String slotName)
+        {
+            if (slotName == null) throw new ArgumentNullException("slotName cannot be null.");
+            List<SlotData> slots = this.slots;
+            for (int i = 0, n = slots.Count; i < n; i++)
+                if (slots[i].name == slotName) return i;
+            return -1;
+        }
 
-		// --- Skins.
-		
-		/// <returns>May be null.</returns>
-		public Skin FindSkin (String skinName) {
-			if (skinName == null) throw new ArgumentNullException("skinName cannot be null.");
-			foreach (Skin skin in skins)
-				if (skin.name == skinName) return skin;
-			return null;
-		}
+        // --- Skins.
 
-		// --- Events.
+        /// <returns>May be null.</returns>
+        public Skin FindSkin(String skinName)
+        {
+            if (skinName == null) throw new ArgumentNullException("skinName cannot be null.");
+            foreach (Skin skin in skins)
+                if (skin.name == skinName) return skin;
+            return null;
+        }
 
-		/// <returns>May be null.</returns>
-		public EventData FindEvent (String eventDataName) {
-			if (eventDataName == null) throw new ArgumentNullException("eventDataName cannot be null.");
-			foreach (EventData eventData in events)
-				if (eventData.name == eventDataName) return eventData;
-			return null;
-		}
+        // --- Events.
 
-		// --- Animations.
-		
-		/// <returns>May be null.</returns>
-		public Animation FindAnimation (String animationName) {
-			if (animationName == null) throw new ArgumentNullException("animationName cannot be null.");
-			List<Animation> animations = this.animations;
-			for (int i = 0, n = animations.Count; i < n; i++) {
-				Animation animation = animations[i];
-				if (animation.name == animationName) return animation;
-			}
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public EventData FindEvent(String eventDataName)
+        {
+            if (eventDataName == null) throw new ArgumentNullException("eventDataName cannot be null.");
+            foreach (EventData eventData in events)
+                if (eventData.name == eventDataName) return eventData;
+            return null;
+        }
 
-		// --- IK constraints.
+        // --- Animations.
 
-		/// <returns>May be null.</returns>
-		public IkConstraintData FindIkConstraint (String ikConstraintName) {
-			if (ikConstraintName == null) throw new ArgumentNullException("ikConstraintName cannot be null.");
-			List<IkConstraintData> ikConstraints = this.ikConstraints;
-			for (int i = 0, n = ikConstraints.Count; i < n; i++) {
-				IkConstraintData ikConstraint = ikConstraints[i];
-				if (ikConstraint.name == ikConstraintName) return ikConstraint;
-			}
-			return null;
-		}
+        /// <returns>May be null.</returns>
+        public Animation FindAnimation(String animationName)
+        {
+            if (animationName == null) throw new ArgumentNullException("animationName cannot be null.");
+            List<Animation> animations = this.animations;
+            for (int i = 0, n = animations.Count; i < n; i++)
+            {
+                Animation animation = animations[i];
+                if (animation.name == animationName) return animation;
+            }
+            return null;
+        }
 
-		// ---
+        // --- IK constraints.
 
-		override public String ToString () {
-			return name ?? base.ToString();
-		}
-	}
+        /// <returns>May be null.</returns>
+        public IkConstraintData FindIkConstraint(String ikConstraintName)
+        {
+            if (ikConstraintName == null) throw new ArgumentNullException("ikConstraintName cannot be null.");
+            List<IkConstraintData> ikConstraints = this.ikConstraints;
+            for (int i = 0, n = ikConstraints.Count; i < n; i++)
+            {
+                IkConstraintData ikConstraint = ikConstraints[i];
+                if (ikConstraint.name == ikConstraintName) return ikConstraint;
+            }
+            return null;
+        }
+
+        // ---
+
+        override public String ToString()
+        {
+            return name ?? base.ToString();
+        }
+    }
 }

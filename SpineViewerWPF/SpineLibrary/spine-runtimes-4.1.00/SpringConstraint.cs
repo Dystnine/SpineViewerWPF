@@ -29,77 +29,83 @@
 
 using System;
 
-namespace Spine4_1_00 {
-	/// <summary>
-	/// Stores the current pose for a spring constraint. A spring constraint applies physics to bones.
-	/// <para>
-	/// See <a href="http://esotericsoftware.com/spine-spring-constraints">Spring constraints</a> in the Spine User Guide.</para>
-	/// </summary>
-	public class SpringConstraint : IUpdatable {
-		internal readonly SpringConstraintData data;
-		internal readonly ExposedList<Bone> bones;
-		// BOZO! - stiffness -> strength. stiffness, damping, rope, stretch -> move to spring.
-		internal float mix, friction, gravity, wind, stiffness, damping;
-		internal bool rope, stretch;
+namespace Spine4_1_00
+{
+    /// <summary>
+    /// Stores the current pose for a spring constraint. A spring constraint applies physics to bones.
+    /// <para>
+    /// See <a href="http://esotericsoftware.com/spine-spring-constraints">Spring constraints</a> in the Spine User Guide.</para>
+    /// </summary>
+    public class SpringConstraint : IUpdatable
+    {
+        internal readonly SpringConstraintData data;
+        internal readonly ExposedList<Bone> bones;
+        // BOZO! - stiffness -> strength. stiffness, damping, rope, stretch -> move to spring.
+        internal float mix, friction, gravity, wind, stiffness, damping;
+        internal bool rope, stretch;
 
-		internal bool active;
+        internal bool active;
 
-		public SpringConstraint (SpringConstraintData data, Skeleton skeleton) {
-			if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
-			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
-			this.data = data;
-			mix = data.mix;
-			friction = data.friction;
-			gravity = data.gravity;
-			wind = data.wind;
-			stiffness = data.stiffness;
-			damping = data.damping;
-			rope = data.rope;
-			stretch = data.stretch;
+        public SpringConstraint(SpringConstraintData data, Skeleton skeleton)
+        {
+            if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
+            if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
+            this.data = data;
+            mix = data.mix;
+            friction = data.friction;
+            gravity = data.gravity;
+            wind = data.wind;
+            stiffness = data.stiffness;
+            damping = data.damping;
+            rope = data.rope;
+            stretch = data.stretch;
 
-			bones = new ExposedList<Bone>(data.Bones.Count);
-			foreach (BoneData boneData in data.bones)
-				bones.Add(skeleton.bones.Items[boneData.index]);
-		}
+            bones = new ExposedList<Bone>(data.Bones.Count);
+            foreach (BoneData boneData in data.bones)
+                bones.Add(skeleton.bones.Items[boneData.index]);
+        }
 
-		/// <summary>Copy constructor.</summary>
-		public SpringConstraint (SpringConstraint constraint, Skeleton skeleton) {
-			if (constraint == null) throw new ArgumentNullException("constraint", "constraint cannot be null.");
-			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
-			data = constraint.data;
-			bones = new ExposedList<Bone>(constraint.bones.Count);
-			foreach (Bone bone in constraint.bones)
-				bones.Add(skeleton.bones.Items[bone.data.index]);
-			mix = constraint.mix;
-			friction = constraint.friction;
-			gravity = constraint.gravity;
-			wind = constraint.wind;
-			stiffness = constraint.stiffness;
-			damping = constraint.damping;
-			rope = constraint.rope;
-			stretch = constraint.stretch;
-		}
+        /// <summary>Copy constructor.</summary>
+        public SpringConstraint(SpringConstraint constraint, Skeleton skeleton)
+        {
+            if (constraint == null) throw new ArgumentNullException("constraint", "constraint cannot be null.");
+            if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
+            data = constraint.data;
+            bones = new ExposedList<Bone>(constraint.bones.Count);
+            foreach (Bone bone in constraint.bones)
+                bones.Add(skeleton.bones.Items[bone.data.index]);
+            mix = constraint.mix;
+            friction = constraint.friction;
+            gravity = constraint.gravity;
+            wind = constraint.wind;
+            stiffness = constraint.stiffness;
+            damping = constraint.damping;
+            rope = constraint.rope;
+            stretch = constraint.stretch;
+        }
 
-		/// <summary>Applies the constraint to the constrained bones.</summary>
-		public void Update () {
+        /// <summary>Applies the constraint to the constrained bones.</summary>
+        public void Update()
+        {
 
-		}
+        }
 
-		/// <summary>A percentage (0-1) that controls the mix between the constrained and unconstrained poses.</summary>
-		public float Mix { get { return mix; } set { mix = value; } }
-		public float Friction { get { return friction; } set { friction = value; } }
-		public float Gravity { get { return gravity; } set { gravity = value; } }
-		public float Wind { get { return wind; } set { wind = value; } }
-		public float Stiffness { get { return stiffness; } set { stiffness = value; } }
-		public float Damping { get { return damping; } set { damping = value; } }
-		public bool Rope { get { return rope; } set { rope = value; } }
-		public bool Stretch { get { return stretch; } set { stretch = value; } }
-		public bool Active { get { return active; } }
-		/// <summary>The spring constraint's setup pose data.</summary>
-		public SpringConstraintData Data { get { return data; } }
+        /// <summary>A percentage (0-1) that controls the mix between the constrained and unconstrained poses.</summary>
+        public float Mix { get { return mix; } set { mix = value; } }
+        public float Friction { get { return friction; } set { friction = value; } }
+        public float Gravity { get { return gravity; } set { gravity = value; } }
+        public float Wind { get { return wind; } set { wind = value; } }
+        public float Stiffness { get { return stiffness; } set { stiffness = value; } }
+        public float Damping { get { return damping; } set { damping = value; } }
+        public bool Rope { get { return rope; } set { rope = value; } }
+        public bool Stretch { get { return stretch; } set { stretch = value; } }
+        public bool Active { get { return active; } }
+        /// <summary>The spring constraint's setup pose data.</summary>
+        public SpringConstraintData Data { get { return data; } }
 
-		override public string ToString () {
-			return data.name;
-		}
-	}
+        override public string ToString()
+        {
+            return data.name;
+        }
+    }
 }

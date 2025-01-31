@@ -28,8 +28,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-namespace Spine2_1_08 {
-	public enum AttachmentType {
-		region, boundingbox, mesh, skinnedmesh
-	}
+namespace Spine2_1_08
+{
+    public enum AttachmentType
+    {
+        region, boundingbox, mesh, skinnedmesh
+    }
 }
