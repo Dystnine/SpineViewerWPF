@@ -26,8 +26,10 @@ public class Player_4_2_33 : IPlayer
 
     public void LoadContent(ContentManager contentManager)
     {
-        skeletonRenderer = new SkeletonRenderer(App.graphicsDevice);
-        skeletonRenderer.PremultipliedAlpha = App.globalValues.Alpha;
+        skeletonRenderer = new SkeletonRenderer(App.graphicsDevice)
+        {
+            PremultipliedAlpha = App.globalValues.Alpha
+        };
 
         if (App.mulitTexture != null && App.mulitTexture.Length == 0)
         {
@@ -40,14 +42,18 @@ public class Player_4_2_33 : IPlayer
 
         if (Common.IsBinaryData(App.globalValues.SelectSpineFile))
         {
-            binary = new SkeletonBinary(atlas);
-            binary.Scale = App.globalValues.Scale;
+            binary = new SkeletonBinary(atlas)
+            {
+                Scale = App.globalValues.Scale
+            };
             skeletonData = binary.ReadSkeletonData(App.globalValues.SelectSpineFile);
         }
         else
         {
-            json = new SkeletonJson(atlas);
-            json.Scale = App.globalValues.Scale;
+            json = new SkeletonJson(atlas)
+            {
+                Scale = App.globalValues.Scale
+            };
             skeletonData = json.ReadSkeletonData(App.globalValues.SelectSpineFile);
         }
         App.globalValues.SpineVersion = skeletonData.Version;
@@ -63,7 +69,7 @@ public class Player_4_2_33 : IPlayer
 
         state = new AnimationState(stateData);
 
-        List<string> AnimationNames = new List<string>();
+        List<string> AnimationNames = [];
         listAnimation = state.Data.skeletonData.Animations;
         foreach (Animation An in listAnimation)
         {
@@ -71,7 +77,7 @@ public class Player_4_2_33 : IPlayer
         }
         App.globalValues.AnimeList = AnimationNames;
 
-        List<string> SkinNames = new List<string>();
+        List<string> SkinNames = [];
         listSkin = state.Data.skeletonData.Skins;
         foreach (Skin Sk in listSkin)
         {
@@ -164,9 +170,9 @@ public class Player_4_2_33 : IPlayer
         skeleton.RootBone.Rotation = App.globalValues.Rotation;
         skeleton.UpdateWorldTransform(Skeleton.Physics.Update);
         skeletonRenderer.PremultipliedAlpha = App.globalValues.Alpha;
-        if (skeletonRenderer.Effect is BasicEffect)
+        if (skeletonRenderer.Effect is BasicEffect basicEffect)
         {
-            ((BasicEffect)skeletonRenderer.Effect).Projection = Matrix.CreateOrthographicOffCenter(0, App.graphicsDevice.Viewport.Width, App.graphicsDevice.Viewport.Height, 0, 1, 0);
+            basicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, App.graphicsDevice.Viewport.Width, App.graphicsDevice.Viewport.Height, 0, 1, 0);
         }
         else
         {

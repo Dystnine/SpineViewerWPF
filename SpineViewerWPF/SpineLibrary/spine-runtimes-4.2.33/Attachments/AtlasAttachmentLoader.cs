@@ -29,81 +29,96 @@
 
 using System;
 
-namespace Spine4_2_33 {
+namespace Spine4_2_33
+{
 
-	/// <summary>
-	/// An AttachmentLoader that configures attachments using texture regions from an Atlas.
-	/// See <a href='http://esotericsoftware.com/spine-loading-skeleton-data#JSON-and-binary-data'>Loading Skeleton Data</a> in the Spine Runtimes Guide.
-	/// </summary>
-	public class AtlasAttachmentLoader : AttachmentLoader {
-		private Atlas[] atlasArray;
+    /// <summary>
+    /// An AttachmentLoader that configures attachments using texture regions from an Atlas.
+    /// See <a href='http://esotericsoftware.com/spine-loading-skeleton-data#JSON-and-binary-data'>Loading Skeleton Data</a> in the Spine Runtimes Guide.
+    /// </summary>
+    public class AtlasAttachmentLoader : AttachmentLoader
+    {
+        private Atlas[] atlasArray;
 
-		public AtlasAttachmentLoader (params Atlas[] atlasArray) {
-			if (atlasArray == null) throw new ArgumentNullException("atlas", "atlas array cannot be null.");
-			this.atlasArray = atlasArray;
-		}
+        public AtlasAttachmentLoader(params Atlas[] atlasArray)
+        {
+            if (atlasArray == null) throw new ArgumentNullException("atlas", "atlas array cannot be null.");
+            this.atlasArray = atlasArray;
+        }
 
-		private void LoadSequence (string name, string basePath, Sequence sequence) {
-			TextureRegion[] regions = sequence.Regions;
-			for (int i = 0, n = regions.Length; i < n; i++) {
-				string path = sequence.GetPath(basePath, i);
-				regions[i] = FindRegion(path);
-				if (regions[i] == null) throw new ArgumentException(string.Format("Region not found in atlas: {0} (region attachment: {1})", path, name));
-			}
-		}
+        private void LoadSequence(string name, string basePath, Sequence sequence)
+        {
+            TextureRegion[] regions = sequence.Regions;
+            for (int i = 0, n = regions.Length; i < n; i++)
+            {
+                string path = sequence.GetPath(basePath, i);
+                regions[i] = FindRegion(path);
+                if (regions[i] == null) throw new ArgumentException(string.Format("Region not found in atlas: {0} (region attachment: {1})", path, name));
+            }
+        }
 
-		public RegionAttachment NewRegionAttachment (Skin skin, string name, string path, Sequence sequence) {
-			RegionAttachment attachment = new RegionAttachment(name);
-			if (sequence != null)
-				LoadSequence(name, path, sequence);
-			else {
-				AtlasRegion region = FindRegion(path);
-				if (region == null)
-					throw new ArgumentException(string.Format("Region not found in atlas: {0} (region attachment: {1})", path, name));
-				attachment.Region = region;
-			}
-			return attachment;
-		}
+        public RegionAttachment NewRegionAttachment(Skin skin, string name, string path, Sequence sequence)
+        {
+            RegionAttachment attachment = new RegionAttachment(name);
+            if (sequence != null)
+                LoadSequence(name, path, sequence);
+            else
+            {
+                AtlasRegion region = FindRegion(path);
+                if (region == null)
+                    throw new ArgumentException(string.Format("Region not found in atlas: {0} (region attachment: {1})", path, name));
+                attachment.Region = region;
+            }
+            return attachment;
+        }
 
-		public MeshAttachment NewMeshAttachment (Skin skin, string name, string path, Sequence sequence) {
-			MeshAttachment attachment = new MeshAttachment(name);
-			if (sequence != null)
-				LoadSequence(name, path, sequence);
-			else {
-				AtlasRegion region = FindRegion(path);
-				if (region == null)
-					throw new ArgumentException(string.Format("Region not found in atlas: {0} (region attachment: {1})", path, name));
-				attachment.Region = region;
-			}
-			return attachment;
-		}
+        public MeshAttachment NewMeshAttachment(Skin skin, string name, string path, Sequence sequence)
+        {
+            MeshAttachment attachment = new MeshAttachment(name);
+            if (sequence != null)
+                LoadSequence(name, path, sequence);
+            else
+            {
+                AtlasRegion region = FindRegion(path);
+                if (region == null)
+                    throw new ArgumentException(string.Format("Region not found in atlas: {0} (region attachment: {1})", path, name));
+                attachment.Region = region;
+            }
+            return attachment;
+        }
 
-		public BoundingBoxAttachment NewBoundingBoxAttachment (Skin skin, string name) {
-			return new BoundingBoxAttachment(name);
-		}
+        public BoundingBoxAttachment NewBoundingBoxAttachment(Skin skin, string name)
+        {
+            return new BoundingBoxAttachment(name);
+        }
 
-		public PathAttachment NewPathAttachment (Skin skin, string name) {
-			return new PathAttachment(name);
-		}
+        public PathAttachment NewPathAttachment(Skin skin, string name)
+        {
+            return new PathAttachment(name);
+        }
 
-		public PointAttachment NewPointAttachment (Skin skin, string name) {
-			return new PointAttachment(name);
-		}
+        public PointAttachment NewPointAttachment(Skin skin, string name)
+        {
+            return new PointAttachment(name);
+        }
 
-		public ClippingAttachment NewClippingAttachment (Skin skin, string name) {
-			return new ClippingAttachment(name);
-		}
+        public ClippingAttachment NewClippingAttachment(Skin skin, string name)
+        {
+            return new ClippingAttachment(name);
+        }
 
-		public AtlasRegion FindRegion (string name) {
-			AtlasRegion region;
+        public AtlasRegion FindRegion(string name)
+        {
+            AtlasRegion region;
 
-			for (int i = 0; i < atlasArray.Length; i++) {
-				region = atlasArray[i].FindRegion(name);
-				if (region != null)
-					return region;
-			}
+            for (int i = 0; i < atlasArray.Length; i++)
+            {
+                region = atlasArray[i].FindRegion(name);
+                if (region != null)
+                    return region;
+            }
 
-			return null;
-		}
-	}
+            return null;
+        }
+    }
 }

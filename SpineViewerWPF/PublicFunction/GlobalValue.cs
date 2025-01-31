@@ -58,7 +58,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SelectAtlasFile != value)
             {
                 _SelectAtlasFile = value;
-                OnPropertyChanged("SelectAtlasFile");
+                OnPropertyChanged(nameof(SelectAtlasFile));
             }
         }
     }
@@ -74,7 +74,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SelectSpineFile != value)
             {
                 _SelectSpineFile = value;
-                OnPropertyChanged("SelectSpineFile");
+                OnPropertyChanged(nameof(SelectSpineFile));
             }
         }
     }
@@ -90,7 +90,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SpineVersion != value)
             {
                 _SpineVersion = value;
-                OnPropertyChanged("SpineVersion");
+                OnPropertyChanged(nameof(SpineVersion));
             }
         }
     }
@@ -107,7 +107,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_AnimeList != value)
             {
                 _AnimeList = value;
-                OnPropertyChanged("AnimeList");
+                OnPropertyChanged(nameof(AnimeList));
             }
         }
     }
@@ -122,7 +122,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SkinList != value)
             {
                 _SkinList = value;
-                OnPropertyChanged("SkinList");
+                OnPropertyChanged(nameof(SkinList));
             }
         }
     }
@@ -137,7 +137,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_Scale != value)
             {
                 _Scale = (float)Math.Round(value, 2);
-                OnPropertyChanged("Scale");
+                OnPropertyChanged(nameof(Scale));
             }
         }
     }
@@ -152,7 +152,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_ViewScale != value)
             {
                 _ViewScale = Math.Round(value, 2);
-                OnPropertyChanged("ViewScale");
+                OnPropertyChanged(nameof(ViewScale));
             }
         }
     }
@@ -170,7 +170,7 @@ public class GlobalValue : INotifyPropertyChanged
                 if (_Speed != value)
                 {
                     _Speed = value;
-                    OnPropertyChanged("Speed");
+                    OnPropertyChanged(nameof(Speed));
                 }
             }
         }
@@ -186,7 +186,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_PosX != value)
             {
                 _PosX = (float)Math.Round(value, 2);
-                OnPropertyChanged("PosX");
+                OnPropertyChanged(nameof(PosX));
             }
         }
     }
@@ -201,7 +201,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_PosY != value)
             {
                 _PosY = (float)Math.Round(value, 2);
-                OnPropertyChanged("PosY");
+                OnPropertyChanged(nameof(PosY));
             }
         }
     }
@@ -217,7 +217,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_PosBGX != value)
             {
                 _PosBGX = (float)Math.Round(value, 2);
-                OnPropertyChanged("PosBGX");
+                OnPropertyChanged(nameof(PosBGX));
             }
         }
     }
@@ -232,7 +232,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_PosBGY != value)
             {
                 _PosBGY = (float)Math.Round(value, 2);
-                OnPropertyChanged("PosBGY");
+                OnPropertyChanged(nameof(PosBGY));
             }
         }
     }
@@ -247,7 +247,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_Alpha != value)
             {
                 _Alpha = value;
-                OnPropertyChanged("Alpha");
+                OnPropertyChanged(nameof(Alpha));
             }
         }
     }
@@ -262,7 +262,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_UseBG != value)
             {
                 _UseBG = value;
-                OnPropertyChanged("UseBG");
+                OnPropertyChanged(nameof(UseBG));
             }
         }
     }
@@ -277,7 +277,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_ControlBG != value)
             {
                 _ControlBG = value;
-                OnPropertyChanged("ControlBG");
+                OnPropertyChanged(nameof(ControlBG));
             }
         }
     }
@@ -292,7 +292,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_IsLoop != value)
             {
                 _IsLoop = value;
-                OnPropertyChanged("IsLoop");
+                OnPropertyChanged(nameof(IsLoop));
             }
         }
     }
@@ -307,7 +307,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SelectAnimeName != value)
             {
                 _SelectAnimeName = value;
-                OnPropertyChanged("SelectAnimeName");
+                OnPropertyChanged(nameof(SelectAnimeName));
             }
         }
     }
@@ -322,7 +322,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SelectSkin != value)
             {
                 _SelectSkin = value;
-                OnPropertyChanged("SelectSkin");
+                OnPropertyChanged(nameof(SelectSkin));
             }
         }
     }
@@ -337,7 +337,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SelectBG != value)
             {
                 _SelectBG = value;
-                OnPropertyChanged("SelectBG");
+                OnPropertyChanged(nameof(SelectBG));
             }
         }
     }
@@ -353,7 +353,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_TimeScale != value)
             {
                 _TimeScale = value;
-                OnPropertyChanged("TimeScale");
+                OnPropertyChanged(nameof(TimeScale));
             }
         }
     }
@@ -368,7 +368,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SelectSpineVersion != value)
             {
                 _SelectSpineVersion = value;
-                OnPropertyChanged("SelectSpineVersion");
+                OnPropertyChanged(nameof(SelectSpineVersion));
             }
         }
     }
@@ -383,7 +383,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_FrameWidth != value)
             {
                 _FrameWidth = value;
-                OnPropertyChanged("FrameWidth");
+                OnPropertyChanged(nameof(FrameWidth));
             }
         }
     }
@@ -398,7 +398,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_FrameHeight != value)
             {
                 _FrameHeight = value;
-                OnPropertyChanged("FrameHeight");
+                OnPropertyChanged(nameof(FrameHeight));
             }
         }
     }
@@ -414,7 +414,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_PreMultiplyAlpha != value)
             {
                 _PreMultiplyAlpha = value;
-                OnPropertyChanged("PreMultiplyAlpha");
+                OnPropertyChanged(nameof(PreMultiplyAlpha));
             }
         }
     }
@@ -430,7 +430,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SetSkin != value)
             {
                 _SetSkin = value;
-                OnPropertyChanged("SetSkin");
+                OnPropertyChanged(nameof(SetSkin));
             }
         }
     }
@@ -446,7 +446,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_SetAnime != value)
             {
                 _SetAnime = value;
-                OnPropertyChanged("SetAnime");
+                OnPropertyChanged(nameof(SetAnime));
             }
         }
     }
@@ -462,7 +462,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_FileHash != value)
             {
                 _FileHash = value;
-                OnPropertyChanged("FileHash");
+                OnPropertyChanged(nameof(FileHash));
             }
         }
     }
@@ -478,7 +478,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_ExportType != value)
             {
                 _ExportType = value;
-                OnPropertyChanged("ExportType");
+                OnPropertyChanged(nameof(ExportType));
             }
         }
     }
@@ -494,7 +494,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_ExportPath != value)
             {
                 _ExportPath = value;
-                OnPropertyChanged("ExportPath");
+                OnPropertyChanged(nameof(ExportPath));
             }
         }
     }
@@ -509,7 +509,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_LoadingProcess != value)
             {
                 _LoadingProcess = value;
-                OnPropertyChanged("LoadingProcess");
+                OnPropertyChanged(nameof(LoadingProcess));
             }
 
         }
@@ -526,7 +526,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (float.TryParse(value.ToString(), out _Lock))
             {
                 _Lock = (float)Math.Round(value, 2);
-                OnPropertyChanged("Lock");
+                OnPropertyChanged(nameof(Lock));
             }
         }
     }
@@ -536,8 +536,7 @@ public class GlobalValue : INotifyPropertyChanged
 
         get
         {
-            if (_GifList == null)
-                _GifList = new List<Texture2D>();
+            _GifList ??= [];
 
 
             return _GifList;
@@ -564,7 +563,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_IsRecoding != value)
             {
                 _IsRecoding = value;
-                OnPropertyChanged("IsRecoding");
+                OnPropertyChanged(nameof(IsRecoding));
             }
         }
     }
@@ -580,7 +579,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_FilpX != value)
             {
                 _FilpX = value;
-                OnPropertyChanged("FilpX");
+                OnPropertyChanged(nameof(FilpX));
             }
         }
     }
@@ -596,7 +595,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_FilpY != value)
             {
                 _FilpY = value;
-                OnPropertyChanged("FilpY");
+                OnPropertyChanged(nameof(FilpY));
             }
         }
     }
@@ -614,7 +613,7 @@ public class GlobalValue : INotifyPropertyChanged
                 if (_RedcodePanelWidth != value)
                 {
                     _RedcodePanelWidth = value;
-                    OnPropertyChanged("RedcodePanelWidth");
+                    OnPropertyChanged(nameof(RedcodePanelWidth));
                 }
             }
         }
@@ -633,7 +632,7 @@ public class GlobalValue : INotifyPropertyChanged
                 if (_Rotation != value)
                 {
                     _Rotation = value;
-                    OnPropertyChanged("Rotation");
+                    OnPropertyChanged(nameof(Rotation));
                 }
             }
         }
@@ -650,7 +649,7 @@ public class GlobalValue : INotifyPropertyChanged
             if (_UseCache != value)
             {
                 _UseCache = value;
-                OnPropertyChanged("UseCache");
+                OnPropertyChanged(nameof(UseCache));
             }
         }
     }

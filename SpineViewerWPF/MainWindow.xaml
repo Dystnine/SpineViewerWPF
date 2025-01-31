@@ -16,10 +16,10 @@
     <DockPanel Name="MasterGrid">
         <Menu Name="mu_Header" DockPanel.Dock="Top" VerticalAlignment="Top"  Height="20" >
             <MenuItem Name="mi_File" Header="File" >
-                <MenuItem Name="mi_File_Load" Header="Open Spine" Click="loadFileToolStripMenuItem_Click" >
+                <MenuItem Name="mi_File_Load" Header="Open Spine" Click="LoadFileToolStripMenuItem_Click" >
                 </MenuItem>
                 <Separator />
-                <MenuItem Name="mi_Exit" Header="Exit"  Click="mi_Exit_Click"  >
+                <MenuItem Name="mi_Exit" Header="Exit"  Click="Mi_Exit_Click"  >
                 </MenuItem>
             </MenuItem>
         </Menu>
@@ -40,9 +40,9 @@
             <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Content="Playing Process："  VerticalAlignment="Top"  FontSize="8" Margin="0,0,0,0"  />
             <Label Name="lb_Loading"  Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Content="100%"  VerticalAlignment="Top"  FontSize="8" Margin="0,0,0,0"  />
             <Slider Name="sl_Loading" Grid.Row="0"  Grid.Column="3" HorizontalAlignment="Right" Width="300" Margin="0,0,0,0" Maximum="1" SmallChange="0.01" LargeChange="0.1"  />
-            <Button Name="btn_PlayControl" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Content="{StaticResource img_pause}" Width="32" Margin="0,0,0,0" Height="20" Click="btn_PlayControl_Click" />
-            <Button Name="btn_CaptureControl" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Right" Content="{StaticResource img_capture}" Width="32" Margin="0,0,0,0" Height="20"  Click="btn_CaptureControl_Click" VerticalAlignment="Top"   />
-            <Button Name="btn_RecodeControl" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Right" Content="{StaticResource img_video}" Width="32" Margin="0,0,0,0" Height="20" Click="btn_RecodeControl_Click" ></Button>
+            <Button Name="btn_PlayControl" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Content="{StaticResource img_pause}" Width="32" Margin="0,0,0,0" Height="20" Click="Btn_PlayControl_Click" />
+            <Button Name="btn_CaptureControl" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Right" Content="{StaticResource img_capture}" Width="32" Margin="0,0,0,0" Height="20"  Click="Btn_CaptureControl_Click" VerticalAlignment="Top"   />
+            <Button Name="btn_RecodeControl" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Right" Content="{StaticResource img_video}" Width="32" Margin="0,0,0,0" Height="20" Click="Btn_RecodeControl_Click" ></Button>
 
             <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="7" BorderBrush="#61738B" BorderThickness="1 1 0 1" />
         </Grid>
@@ -128,13 +128,13 @@
                                 <Label Content="SpineUseAlpha" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" ></Label>
                                 <CheckBox Name="chb_Alpha" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="True"  />
                                 <Label Content="PreMultiplyAlpha" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" ></Label>
-                                <CheckBox Name="chb_PreMultiplyAlpha" Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Left"  VerticalAlignment="Center" IsChecked="True" Click="chb_PreMultiplyAlpha_Click" />
+                                <CheckBox Name="chb_PreMultiplyAlpha" Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Left"  VerticalAlignment="Center" IsChecked="True" Click="Chb_PreMultiplyAlpha_Click" />
                                 <Label Content="IsLoop" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" ></Label>
-                                <CheckBox Name="chb_IsLoop" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"  VerticalAlignment="Center" IsChecked="True" Click="chb_IsLoop_Click"/>
+                                <CheckBox Name="chb_IsLoop" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"  VerticalAlignment="Center" IsChecked="True" Click="Chb_IsLoop_Click"/>
                                 <Label Content="Skin" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" />
-                                <ComboBox Name="cb_SkinList" Grid.Row="3" Grid.Column="1"  HorizontalAlignment="Left"  MinWidth="100" VerticalAlignment="Center" Width="Auto" SelectionChanged="cb_SkinList_SelectionChanged"/>
+                                <ComboBox Name="cb_SkinList" Grid.Row="3" Grid.Column="1"  HorizontalAlignment="Left"  MinWidth="100" VerticalAlignment="Center" Width="Auto" SelectionChanged="Cb_SkinList_SelectionChanged"/>
                                 <Label Content="Anime" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" ></Label>
-                                <ComboBox Name="cb_AnimeList" Grid.Row="4" Grid.Column="1"  SelectionChanged="cb_AnimeList_SelectionChanged" HorizontalAlignment="Left" MinWidth="100" VerticalAlignment="Center" Width="Auto"/>
+                                <ComboBox Name="cb_AnimeList" Grid.Row="4" Grid.Column="1"  SelectionChanged="Cb_AnimeList_SelectionChanged" HorizontalAlignment="Left" MinWidth="100" VerticalAlignment="Center" Width="Auto"/>
 
                                 <Label Content="FPS" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right"/>
                                 <TextBox Name="tb_Fps" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" MinWidth="30"  TextWrapping="NoWrap" Text="" VerticalAlignment="Center"  Width="Auto"  MaxLength="3" />
@@ -224,7 +224,7 @@
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Label Content="Export Type" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right"/>
-                                <ComboBox x:Name="cb_export_type" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" SelectionChanged="cb_export_type_SelectionChanged" >
+                                <ComboBox x:Name="cb_export_type" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" SelectionChanged="Cb_export_type_SelectionChanged" >
                                     <ComboBoxItem Content="Gif" IsSelected="True"/>
                                     <ComboBoxItem Content="Png Sequence"/>
                                 </ComboBox>

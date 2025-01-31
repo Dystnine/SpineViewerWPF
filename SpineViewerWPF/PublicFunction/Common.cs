@@ -35,13 +35,10 @@ public class Common
         App.globalValues.FilpY = false;
         App.globalValues.PosBGX = 0;
         App.globalValues.PosBGY = 0;
-        if (App.textureBG != null)
-            App.textureBG.Dispose();
+        App.textureBG?.Dispose();
 
-        if (App.globalValues.AnimeList != null)
-            App.globalValues.AnimeList.Clear();
-        if (App.globalValues.SkinList != null)
-            App.globalValues.SkinList.Clear();
+        App.globalValues.AnimeList?.Clear();
+        App.globalValues.SkinList?.Clear();
 
     }
 
@@ -99,18 +96,12 @@ public class Common
 
     public static Texture2D SetBG(string path)
     {
-        using (FileStream fileStream = new FileStream(path, FileMode.Open))
-        {
-            using (System.Drawing.Image image = System.Drawing.Image.FromStream(fileStream))
-            {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    ms.Seek(0, SeekOrigin.Begin);
-                    return Texture2D.FromStream(App.appXC.GraphicsDevice, ms);
-                }
-            }
-        }
+        using FileStream fileStream = new(path, FileMode.Open);
+        using System.Drawing.Image image = System.Drawing.Image.FromStream(fileStream);
+        using MemoryStream ms = new();
+        image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+        ms.Seek(0, SeekOrigin.Begin);
+        return Texture2D.FromStream(App.appXC.GraphicsDevice, ms);
 
     }
 
@@ -131,14 +122,14 @@ public class Common
     {
         if (App.globalValues.ExportType == "Gif")
         {
-            Thread t = new Thread(() =>
+            Thread t = new(() =>
             {
                 if (!App.globalValues.UseCache)
                 {
-                    List<MemoryStream> lms = new List<MemoryStream>();
+                    List<MemoryStream> lms = [];
                     for (int i = 0; i < App.globalValues.GifList.Count; i++)
                     {
-                        MemoryStream ms = new MemoryStream();
+                        MemoryStream ms = new();
                         App.globalValues.GifList[i].SaveAsPng(ms, App.globalValues.GifList[i].Width, App.globalValues.GifList[i].Height);
                         lms.Add(ms);
                         App.globalValues.GifList[i].Dispose();
@@ -161,9 +152,11 @@ public class Common
 
     public static void SaveToGif(List<MemoryStream> lms, float time = 0)
     {
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-        saveFileDialog.Filter = "Gif Image|*.gif";
-        saveFileDialog.Title = "Save a Gif File";
+        SaveFileDialog saveFileDialog = new()
+        {
+            Filter = "Gif Image|*.gif",
+            Title = "Save a Gif File"
+        };
 
         string fileName = GetFileNameNoEx(App.globalValues.SelectAtlasFile);
         if (App.globalValues.SelectAnimeName != "")
@@ -176,7 +169,7 @@ public class Common
         {
             return;
         }
-        int delay = 0;
+        int delay;
         if (time == 0)
         {
             delay = 1000 / App.globalValues.Speed;
@@ -188,14 +181,11 @@ public class Common
 
         if (saveFileDialog.FileName != "")
         {
-
-            SixLabors.ImageSharp.Image img = null;
-
-            SixLabors.ImageSharp.Image<Rgba32> gif = new SixLabors.ImageSharp.Image<Rgba32>(Convert.ToInt32(App.globalValues.FrameWidth), Convert.ToInt32(App.globalValues.FrameHeight));
+            SixLabors.ImageSharp.Image<Rgba32> gif = new(Convert.ToInt32(App.globalValues.FrameWidth), Convert.ToInt32(App.globalValues.FrameHeight));
 
             for (int i = 0; i < lms.Count; ++i)
             {
-                img = SixLabors.ImageSharp.Image.Load(lms[i].ToArray());
+                Image img = SixLabors.ImageSharp.Image.Load(lms[i].ToArray());
                 gif.Frames.AddFrame(img.Frames[0]);
                 img.Dispose();
             }
@@ -237,9 +227,11 @@ public class Common
 
     public static void SaveToGif2(float time = 0)
     {
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-        saveFileDialog.Filter = "Gif Image|*.gif";
-        saveFileDialog.Title = "Save a Gif File";
+        SaveFileDialog saveFileDialog = new()
+        {
+            Filter = "Gif Image|*.gif",
+            Title = "Save a Gif File"
+        };
 
         string fileName = GetFileNameNoEx(App.globalValues.SelectAtlasFile);
         if (App.globalValues.SelectAnimeName != "")
@@ -256,7 +248,7 @@ public class Common
         string[] pngList = Directory.GetFiles($"{App.rootDir}\\Temp\\", "*.png", SearchOption.TopDirectoryOnly);
 
 
-        int delay = 0;
+        int delay;
         if (time == 0)
         {
             delay = 1000 / App.globalValues.Speed;
@@ -268,14 +260,11 @@ public class Common
 
         if (saveFileDialog.FileName != "")
         {
-
-            SixLabors.ImageSharp.Image img = null;
-
-            SixLabors.ImageSharp.Image<Rgba32> gif = new SixLabors.ImageSharp.Image<Rgba32>(Convert.ToInt32(App.globalValues.FrameWidth), Convert.ToInt32(App.globalValues.FrameHeight));
+            SixLabors.ImageSharp.Image<Rgba32> gif = new(Convert.ToInt32(App.globalValues.FrameWidth), Convert.ToInt32(App.globalValues.FrameHeight));
 
             for (int i = 0; i < pngList.Length; ++i)
             {
-                img = SixLabors.ImageSharp.Image.Load(pngList[i]);
+                Image img = SixLabors.ImageSharp.Image.Load(pngList[i]);
                 gif.Frames.AddFrame(img.Frames[0]);
                 img.Dispose();
             }
@@ -328,9 +317,11 @@ public class Common
 
     public static void SaveToPng(Texture2D texture2D)
     {
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-        saveFileDialog.Filter = "Png Image|*.png";
-        saveFileDialog.Title = "Save a Png File";
+        SaveFileDialog saveFileDialog = new()
+        {
+            Filter = "Png Image|*.png",
+            Title = "Save a Png File"
+        };
         string fileName = GetFileNameNoEx(App.globalValues.SelectAtlasFile);
         if (App.globalValues.SelectAnimeName != "")
             fileName += $"_{App.globalValues.SelectAnimeName}";
@@ -342,10 +333,8 @@ public class Common
 
         if (result == true)
         {
-            using (var fs = (FileStream)saveFileDialog.OpenFile())
-            {
-                texture2D.SaveAsPng(fs, texture2D.Width, texture2D.Height);
-            }
+            using var fs = (FileStream)saveFileDialog.OpenFile();
+            texture2D.SaveAsPng(fs, texture2D.Width, texture2D.Height);
         }
 
     }
@@ -357,7 +346,7 @@ public class Common
         _graphicsDevice.SetRenderTarget(null);
         wpfRenderTarget.GetData(screenData);
 
-        Texture2D texture = new Texture2D(_graphicsDevice, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight, false, _graphicsDevice.PresentationParameters.BackBufferFormat);
+        Texture2D texture = new(_graphicsDevice, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight, false, _graphicsDevice.PresentationParameters.BackBufferFormat);
 
         texture.SetData(screenData);
         if (!App.globalValues.UseCache && App.globalValues.ExportType == "Gif")
@@ -378,7 +367,7 @@ public class Common
             {
                 exportDir = App.globalValues.ExportPath + "\\";
             }
-            using (FileStream fs = new FileStream($"{exportDir}{fileName}_{App.recordImageCount.ToString().PadLeft(7, '0')}.png"
+            using (FileStream fs = new($"{exportDir}{fileName}_{App.recordImageCount.ToString().PadLeft(7, '0')}.png"
                 , FileMode.Create))
             {
                 texture.SaveAsPng(fs, _graphicsDevice.PresentationParameters.BackBufferWidth
@@ -401,18 +390,18 @@ public class Common
 
         GraphicsDevice _graphicsDevice = App.appXC.GraphicsDevice;
         App.globalValues.TimeScale = 0;
-        using (RenderTarget2D renderTarget = new RenderTarget2D(_graphicsDevice, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight))
+        using (RenderTarget2D renderTarget = new(_graphicsDevice, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight))
         {
             _graphicsDevice.Textures[0] = null;
             _graphicsDevice.SetRenderTarget(renderTarget);
             App.appXC.Draw();
-            GameTime gameTime = new GameTime();
+            GameTime gameTime = new();
             App.appXC.Update(gameTime);
             _graphicsDevice.Viewport = new Viewport(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight);
             _graphicsDevice.SetRenderTarget(null);
             int[] screenData = new int[_graphicsDevice.PresentationParameters.BackBufferWidth * _graphicsDevice.PresentationParameters.BackBufferHeight];
             renderTarget.GetData(screenData);
-            Texture2D texture = new Texture2D(_graphicsDevice, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight, false, _graphicsDevice.PresentationParameters.BackBufferFormat);
+            Texture2D texture = new(_graphicsDevice, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight, false, _graphicsDevice.PresentationParameters.BackBufferFormat);
             texture.SetData(screenData);
             Common.SaveToPng(texture);
             texture.Dispose();
@@ -443,5 +432,3 @@ public class Common
     }
 
 }
-
-

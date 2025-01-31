@@ -27,8 +27,10 @@
  * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-namespace Spine4_2_33 {
-	public enum AttachmentType {
-		Region, Boundingbox, Mesh, Linkedmesh, Path, Point, Clipping, Sequence
-	}
+namespace Spine4_2_33
+{
+    public enum AttachmentType
+    {
+        Region, Boundingbox, Mesh, Linkedmesh, Path, Point, Clipping, Sequence
+    }
 }

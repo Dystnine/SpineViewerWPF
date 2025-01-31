@@ -21,15 +21,16 @@ namespace SpineViewerWPF
         public static ContentControl MasterControl;
         public static UCPlayer UC_Player;
         public static Open open;
-        System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+        System.Windows.Threading.DispatcherTimer dispatcherTimer = new();
+
         public MainWindow()
         {
             InitializeComponent();
-            Game game = new Game();
+            Game game = new();
             //game.IsFixedTimeStep = true;
-            this.Title = $"SpineViewerWPF      v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+            this.Title = $"SpineViewerWPF   v3.0.0.0-E";
             MasterMain = this;
-            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            dispatcherTimer.Tick += DispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             dispatcherTimer.Start();
             LoadSetting();
@@ -73,7 +74,7 @@ namespace SpineViewerWPF
             chb_FilpY.SetBinding(CheckBox.IsCheckedProperty, new Binding() { Source = App.globalValues, Path = new PropertyPath("FilpY") });
             chb_LessMemory.SetBinding(CheckBox.IsCheckedProperty, new Binding() { Source = App.globalValues, Path = new PropertyPath("UseCache") });
 
-            TextCompositionManager.AddPreviewTextInputStartHandler(tb_Fps, tb_Fps_PreviewTextInput);
+            TextCompositionManager.AddPreviewTextInputStartHandler(tb_Fps, Tb_Fps_PreviewTextInput);
             sl_Loading.SetBinding(Slider.ValueProperty, new Binding() { Source = App.globalValues, Path = new PropertyPath("Lock") });
             lb_Loading.SetBinding(ContentProperty, new Binding() { Source = App.globalValues, Path = new PropertyPath("LoadingProcess") });
             GridAttributes.ColumnDefinitions[0].Width = new GridLength(34);
@@ -84,7 +85,7 @@ namespace SpineViewerWPF
             App.mainHeight = this.ActualHeight;
         }
 
-        private void cb_AnimeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_AnimeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_AnimeList.SelectedIndex != -1)
             {
@@ -96,13 +97,7 @@ namespace SpineViewerWPF
             }
         }
 
-        public void UpdateSpine()
-        {
-            if (UC_Player != null)
-            {
-                UC_Player.ChangeSet();
-            }
-        }
+        public static void UpdateSpine() => UC_Player?.ChangeSet();
 
         public static void SetCBAnimeName()
         {
@@ -126,7 +121,7 @@ namespace SpineViewerWPF
 
         }
 
-        private void cb_SkinList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_SkinList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_SkinList.SelectedIndex != -1)
             {
@@ -139,25 +134,25 @@ namespace SpineViewerWPF
         }
 
 
-        private void chb_IsLoop_Click(object sender, RoutedEventArgs e)
+        private void Chb_IsLoop_Click(object sender, RoutedEventArgs e)
         {
             App.globalValues.SetAnime = true;
         }
-        private void chb_PreMultiplyAlpha_Click(object sender, RoutedEventArgs e)
+        private void Chb_PreMultiplyAlpha_Click(object sender, RoutedEventArgs e)
         {
             UpdateSpine();
         }
 
 
 
-        private void tb_Fps_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void Tb_Fps_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regExp = new Regex(@"\d");
+            Regex regExp = new(@"\d");
             string singleValue = e.Text;
             e.Handled = !regExp.Match(singleValue).Success;
         }
 
-        private void loadFileToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        private void LoadFileToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
             open = new Open(this);
             open.Show();
@@ -185,15 +180,9 @@ namespace SpineViewerWPF
                     btn_PlayControl.Content = this.FindResource("img_pause");
 
                     DependencyObject xnaParent = ((UserControl)Player.Content).Parent;
-                    if (xnaParent != null)
-                    {
-                        xnaParent.SetValue(ContentPresenter.ContentProperty, null);
-                    }
+                    xnaParent?.SetValue(ContentPresenter.ContentProperty, null);
                     Canvas oldCanvas = (Canvas)App.appXC.Parent;
-                    if (oldCanvas != null)
-                    {
-                        oldCanvas.Children.Clear();
-                    }
+                    oldCanvas?.Children.Clear();
                     Player.Content = null;
                     UC_Player = new UCPlayer();
                     Player.Content = UC_Player;
@@ -217,7 +206,7 @@ namespace SpineViewerWPF
 
 
 
-        private void cb_export_type_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_export_type_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_export_type.SelectedIndex != -1)
             {
@@ -230,7 +219,7 @@ namespace SpineViewerWPF
 
 
         int tempSpeed = 0;
-        private void btn_PlayControl_Click(object sender, RoutedEventArgs e)
+        private void Btn_PlayControl_Click(object sender, RoutedEventArgs e)
         {
             if (App.globalValues.Speed == 0)
             {
@@ -255,12 +244,12 @@ namespace SpineViewerWPF
             }
         }
 
-        private void btn_CaptureControl_Click(object sender, RoutedEventArgs e)
+        private void Btn_CaptureControl_Click(object sender, RoutedEventArgs e)
         {
             Common.TakeScreenshot();
         }
 
-        private void btn_RecodeControl_Click(object sender, RoutedEventArgs e)
+        private void Btn_RecodeControl_Click(object sender, RoutedEventArgs e)
         {
             if (!App.globalValues.IsRecoding)
             {
@@ -268,11 +257,12 @@ namespace SpineViewerWPF
                 {
                     case "Png Sequence":
 
-                        SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-                        saveFileDialog.Filter = "All files (*.*)|*.*";
-                        saveFileDialog.RestoreDirectory = true;
-                        saveFileDialog.FileName = "Save Path";
+                        SaveFileDialog saveFileDialog = new()
+                        {
+                            Filter = "All files (*.*)|*.*",
+                            RestoreDirectory = true,
+                            FileName = "Save Path"
+                        };
 
                         if (saveFileDialog.ShowDialog() == true)
                         {
@@ -301,9 +291,11 @@ namespace SpineViewerWPF
 
         private void Btn_SelectBG_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = App.lastDir;
-            openFileDialog.Filter = "Png Files (*.png)|*.png|Jpeg Files (*.jpg)|*.jpg;";
+            OpenFileDialog openFileDialog = new()
+            {
+                InitialDirectory = App.lastDir,
+                Filter = "Png Files (*.png)|*.png|Jpeg Files (*.jpg)|*.jpg;"
+            };
 
             if (openFileDialog.ShowDialog() == true)
             {
@@ -363,16 +355,14 @@ namespace SpineViewerWPF
         {
             Properties.Settings.Default.LastSelectDir = App.lastDir;
             Properties.Settings.Default.Save();
-            if (open != null)
-                open.Close();
+            open?.Close();
         }
 
-        private void mi_Exit_Click(object sender, RoutedEventArgs e)
+        private void Mi_Exit_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.LastSelectDir = App.lastDir;
             Properties.Settings.Default.Save();
-            if (open != null)
-                open.Close();
+            open?.Close();
             Application.Current.Shutdown();
         }
 
@@ -387,7 +377,7 @@ namespace SpineViewerWPF
         }
 
 
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             if (App.graphicsDevice != null && App.graphicsDevice.GraphicsDeviceStatus == Microsoft.Xna.Framework.Graphics.GraphicsDeviceStatus.NotReset)
             {

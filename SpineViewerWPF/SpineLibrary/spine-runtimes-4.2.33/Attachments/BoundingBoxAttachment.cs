@@ -27,22 +27,25 @@
  * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-using System;
+namespace Spine4_2_33
+{
+    /// <summary>Attachment that has a polygon for bounds checking.</summary>
+    public class BoundingBoxAttachment : VertexAttachment
+    {
+        public BoundingBoxAttachment(string name)
+            : base(name)
+        {
+        }
 
-namespace Spine4_2_33 {
-	/// <summary>Attachment that has a polygon for bounds checking.</summary>
-	public class BoundingBoxAttachment : VertexAttachment {
-		public BoundingBoxAttachment (string name)
-			: base(name) {
-		}
+        /// <summary>Copy constructor.</summary>
+        protected BoundingBoxAttachment(BoundingBoxAttachment other)
+            : base(other)
+        {
+        }
 
-		/// <summary>Copy constructor.</summary>
-		protected BoundingBoxAttachment (BoundingBoxAttachment other)
-			: base(other) {
-		}
-
-		public override Attachment Copy () {
-			return new BoundingBoxAttachment(this);
-		}
-	}
+        public override Attachment Copy()
+        {
+            return new BoundingBoxAttachment(this);
+        }
+    }
 }

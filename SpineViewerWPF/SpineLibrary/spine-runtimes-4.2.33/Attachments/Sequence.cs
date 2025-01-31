@@ -30,66 +30,76 @@
 using System;
 using System.Text;
 
-namespace Spine4_2_33 {
-	public class Sequence {
-		static int nextID = 0;
-		static readonly Object nextIdLock = new Object();
+namespace Spine4_2_33
+{
+    public class Sequence
+    {
+        static int nextID = 0;
+        static readonly Object nextIdLock = new Object();
 
-		internal readonly int id;
-		internal readonly TextureRegion[] regions;
-		internal int start, digits, setupIndex;
+        internal readonly int id;
+        internal readonly TextureRegion[] regions;
+        internal int start, digits, setupIndex;
 
-		public int Start { get { return start; } set { start = value; } }
-		public int Digits { get { return digits; } set { digits = value; } }
-		/// <summary>The index of the region to show for the setup pose.</summary>
-		public int SetupIndex { get { return setupIndex; } set { setupIndex = value; } }
-		public TextureRegion[] Regions { get { return regions; } }
-		/// <summary>Returns a unique ID for this attachment.</summary>
-		public int Id { get { return id; } }
+        public int Start { get { return start; } set { start = value; } }
+        public int Digits { get { return digits; } set { digits = value; } }
+        /// <summary>The index of the region to show for the setup pose.</summary>
+        public int SetupIndex { get { return setupIndex; } set { setupIndex = value; } }
+        public TextureRegion[] Regions { get { return regions; } }
+        /// <summary>Returns a unique ID for this attachment.</summary>
+        public int Id { get { return id; } }
 
-		public Sequence (int count) {
-			lock (Sequence.nextIdLock) {
-				id = Sequence.nextID++;
-			}
-			regions = new TextureRegion[count];
-		}
+        public Sequence(int count)
+        {
+            lock (Sequence.nextIdLock)
+            {
+                id = Sequence.nextID++;
+            }
+            regions = new TextureRegion[count];
+        }
 
-		/// <summary>Copy constructor.</summary>
-		public Sequence (Sequence other) {
-			lock (Sequence.nextIdLock) {
-				id = Sequence.nextID++;
-			}
-			regions = new TextureRegion[other.regions.Length];
-			Array.Copy(other.regions, 0, regions, 0, regions.Length);
+        /// <summary>Copy constructor.</summary>
+        public Sequence(Sequence other)
+        {
+            lock (Sequence.nextIdLock)
+            {
+                id = Sequence.nextID++;
+            }
+            regions = new TextureRegion[other.regions.Length];
+            Array.Copy(other.regions, 0, regions, 0, regions.Length);
 
-			start = other.start;
-			digits = other.digits;
-			setupIndex = other.setupIndex;
-		}
+            start = other.start;
+            digits = other.digits;
+            setupIndex = other.setupIndex;
+        }
 
-		public void Apply (Slot slot, IHasTextureRegion attachment) {
-			int index = slot.SequenceIndex;
-			if (index == -1) index = setupIndex;
-			if (index >= regions.Length) index = regions.Length - 1;
-			TextureRegion region = regions[index];
-			if (attachment.Region != region) {
-				attachment.Region = region;
-				attachment.UpdateRegion();
-			}
-		}
+        public void Apply(Slot slot, IHasTextureRegion attachment)
+        {
+            int index = slot.SequenceIndex;
+            if (index == -1) index = setupIndex;
+            if (index >= regions.Length) index = regions.Length - 1;
+            TextureRegion region = regions[index];
+            if (attachment.Region != region)
+            {
+                attachment.Region = region;
+                attachment.UpdateRegion();
+            }
+        }
 
-		public string GetPath (string basePath, int index) {
-			StringBuilder buffer = new StringBuilder(basePath.Length + digits);
-			buffer.Append(basePath);
-			string frame = (start + index).ToString();
-			for (int i = digits - frame.Length; i > 0; i--)
-				buffer.Append('0');
-			buffer.Append(frame);
-			return buffer.ToString();
-		}
-	}
+        public string GetPath(string basePath, int index)
+        {
+            StringBuilder buffer = new StringBuilder(basePath.Length + digits);
+            buffer.Append(basePath);
+            string frame = (start + index).ToString();
+            for (int i = digits - frame.Length; i > 0; i--)
+                buffer.Append('0');
+            buffer.Append(frame);
+            return buffer.ToString();
+        }
+    }
 
-	public enum SequenceMode {
-		Hold, Once, Loop, Pingpong, OnceReverse, LoopReverse, PingpongReverse
-	}
+    public enum SequenceMode
+    {
+        Hold, Once, Loop, Pingpong, OnceReverse, LoopReverse, PingpongReverse
+    }
 }
