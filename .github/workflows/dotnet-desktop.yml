@@ -6,29 +6,27 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
+
 env:
   DOTNET_VERSION: '8.0.x'
 
 jobs:
   build:
-    runs-on: ubuntu-latest # 也可以使用 windows-latest 或 macos-latest
+    runs-on: windows-latest  # 专门使用 Windows 运行器
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+    - name: Build for Windows
+      run: dotnet build --configuration Release --runtime win-x64 --no-restore
 
-    - name: Test (可选)
-      run: dotnet test --no-restore --verbosity normal
-
-    - name: Publish (可选)
-      run: dotnet publish -c Release -o ./publish --no-restore
+    - name: Publish Windows application
+      run: dotnet publish -c Release -o ./publish --runtime win-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=true
