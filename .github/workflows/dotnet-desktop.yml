@@ -1,4 +1,4 @@
-name: Build Windows WPF Application
+name: Build and Package Windows .NET 8 Application
 
 on:
   push:
@@ -6,7 +6,11 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
-  
+env:
+  DOTNET_VERSION: '8.0.x'
+  CONFIGURATION: 'Release'
+  OUTPUT_DIR: 'build-output'
+
 jobs:
   build:
     runs-on: windows-latest
@@ -17,21 +21,26 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+    - name: Build for Windows (x64)
+      run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore
 
-    - name: Publish Windows application
+    - name: Create output directory
       run: |
-        dotnet publish SpineViewerWPF.csproj -c Release -o ./publish --runtime win-x64
-        Compress-Archive -Path ./publish/* -DestinationPath "./SpineViewerWPF-win-x64.zip"
-        
-    - name: Upload artifact
+        New-Item -Path ${{ env.OUTPUT_DIR }} -ItemType Directory -Force
+        Copy-Item -Path "**/bin/${{ env.CONFIGURATION }}/**/*" -Destination ${{ env.OUTPUT_DIR }} -Recurse -Force
+
+    - name: Compress build output
+      run: |
+        $date = Get-Date -Format "yyyyMMdd"
+        Compress-Archive -Path "${{ env.OUTPUT_DIR }}/*" -DestinationPath "./BuildOutput-$date.zip"
+
+    - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: SpineViewerWPF
-        path: ./SpineViewerWPF-win-x64.zip
+        name: Windows-Build-Output
+        path: ./BuildOutput-*.zip
